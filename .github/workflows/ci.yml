@@ -46,25 +46,26 @@ jobs:
 
   deploy:
     needs: build-and-push-image
-    # main 브랜치 push 이벤트에서만 배포 (Pull Request 시에는 실행하지 않음)
     if: github.event_name != 'pull_request'
-    
-    # 등록된 GitHub Self-hosted Runner에서 동작하게 설정
     runs-on: self-hosted
 
     steps:
-      # 1. Docker Hub에서 최신 빌드된 이미지를 Pull
+      # 1. Docker Hub에서 최신 이미지 Pull (PowerShell 명시)
       - name: Pull latest image from Docker Hub
+        shell: powershell
         run: docker pull ${{ secrets.DOCKERHUB_USERNAME }}/face-to-character-api:latest
 
-      # 2. 실행 중인 기존 컨테이너 중지 (없을 경우 에러 무시)
+      # 2. 기존 컨테이너 중지 (2>$null 로 수정)
       - name: Stop existing container
-        run: docker stop face-to-character-api || true
+        shell: powershell
+        run: docker stop face-to-character-api 2>$null
 
-      # 3. 기존 컨테이너 삭제 (없을 경우 에러 무시)
+      # 3. 기존 컨테이너 삭제 (2>$null 로 수정)
       - name: Remove existing container
-        run: docker rm face-to-character-api || true
+        shell: powershell
+        run: docker rm face-to-character-api 2>$null
 
-      # 4. 새로운 이미지로 컨테이너 실행 (8000 포트 매핑)
+      # 4. 새로운 컨테이너 실행
       - name: Run new container
+        shell: powershell
         run: docker run -d --name face-to-character-api -p 8000:8000 ${{ secrets.DOCKERHUB_USERNAME }}/face-to-character-api:latest
