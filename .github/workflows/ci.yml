@@ -46,25 +46,25 @@ jobs:
 
   deploy:
     needs: build-and-push-image
+    # Pull Request가 아닐 때(즉, main 브랜치 푸시일 때)만 배포 수행
     if: github.event_name != 'pull_request'
     runs-on: self-hosted
 
     steps:
       # 1. 최신 이미지 Pull
       - name: Pull latest image from Docker Hub
-        shell: powershell
         run: docker pull ${{ secrets.DOCKERHUB_USERNAME }}/face-to-character-api:latest
 
-      # 2 & 3. 기존 컨테이너 중지 및 삭제 (에러가 나도 무시하고 진행)
+      # 2. 기존 배포된 컨테이너가 있다면 강제 종료 및 삭제 (에러 무시)
       - name: Stop and Remove existing container
-        shell: powershell
-        run: |
-          $ErrorActionPreference = "SilentlyContinue"
-          docker stop face-to-character-api 2>$null
-          docker rm face-to-character-api 2>$null
-          $ErrorActionPreference = "Continue"
+        continue-on-error: true
+        run: docker rm -f face-to-character-api
 
-      # 4. 새로운 컨테이너 실행
+      # 3. 새로운 컨테이너 백그라운드 실행 (서버 재부팅 시 자동 재시작 추가)
       - name: Run new container
-        shell: powershell
-        run: docker run -d --name face-to-character-api -p 8000:8000 ${{ secrets.DOCKERHUB_USERNAME }}/face-to-character-api:latest
+        run: docker run -d --name face-to-character-api -p 8000:8000 --restart unless-stopped ${{ secrets.DOCKERHUB_USERNAME }}/face-to-character-api:latest
+
+      # 4. 디스크 용량 관리를 위해 사용하지 않는(Dangling) 예전 이미지 삭제
+      - name: Clean up old Docker images
+        continue-on-error: true
+        run: docker image prune -f
