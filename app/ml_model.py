@@ -15,39 +15,36 @@ def generate_character_image(image_bytes: bytes) -> bytes:
     if max(h, w) > max_dim:
         scale = max_dim / max(h, w)
         img = cv2.resize(img, (int(w * scale), int(h * scale)), interpolation=cv2.INTER_AREA)
-        h, w = img.shape[:2]
 
-    # 2. 캐리커처 변신: 과장 효과(형태 왜곡) 적용
-    # 이미지 중앙부(얼굴)가 볼록하게 튀어나오는 Fisheye(어안) 렌즈 왜곡 효과
-    # 카메라 매트릭스 가설 설정
-    K = np.array([[w, 0, w/2],
-                  [0, h, h/2],
-                  [0, 0, 1]], dtype=np.float32)
-    # 왜곡 계수 설정: 중앙을 확대하고 가장자리를 둥글게 밀어냄
-    D = np.array([-0.08, 0.03, 0, 0], dtype=np.float32) 
+    # --- 길거리 캐리커처 (평면 마커펜 느낌) 알고리즘 ---
+
+    # 1. 또렷한 펜/마커스케치 윤곽선 생성
+    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    gray = cv2.medianBlur(gray, 5)  # 잔선 제거 방지용 블러
     
-    # 왜곡 맵 적용 (가장자리는 자연스럽게 늘리거나 반사경계로 처리)
-    map1, map2 = cv2.initUndistortRectifyMap(K, D, None, K, (w,h), cv2.CV_32FC1)
-    warped_img = cv2.remap(img, map1, map2, interpolation=cv2.INTER_LINEAR, borderMode=cv2.BORDER_REPLICATE)
+    # 어댑티브 쓰레시홀드로 특징을 잘 잡는 강한 선 생성
+    edges = cv2.adaptiveThreshold(gray, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY, 11, 4)
+    # 지저분한 노이즈 선 다시 한 번 다듬기
+    edges = cv2.medianBlur(edges, 3)
 
-    # 3. 회화적 팝아트 질감(Posterization + Stylization) 적용
-    # 색상을 단순화 시켜 유화/팝아트 포스터 같은 거친 질감 느낌 유도
-    quantized = warped_img // 32 * 32
-
-    # Stylization: 수채화 물감이 번진 듯한 터치와 연필 스케치가 가미된 효과 제공
-    # sigma_s: 필터 이웃 크기, sigma_r: 색상 균일도
-    cartoon = cv2.stylization(quantized, sigma_s=40, sigma_r=0.3)
-
-    # 윤곽선 일부만 아주 약하게 추출하여 그림체를 선명하게 보정 (선택 사항)
-    gray = cv2.cvtColor(quantized, cv2.COLOR_BGR2GRAY)
-    gray = cv2.medianBlur(gray, 3)
-    edges = cv2.adaptiveThreshold(gray, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY, 7, 7)
+    # 2. 입체감(Shading) 완벽 제거: 색상 평탄화 (마커 채색 느낌)
+    # 강력한 양방향 필터를 반복 적용하여 그라데이션(음영)을 최대한 민무늬로 밀어버림
+    color = cv2.bilateralFilter(img, 9, 300, 300)
+    for _ in range(2):
+        color = cv2.bilateralFilter(color, 9, 300, 300)
+        
+    # 포스터 리제이션(Posterization): 색 공간을 64단위 덩어리로 끊어서 입체감을 박살냄.
+    # 그라데이션이 사라지고 2D 카툰처럼 평면적인 면으로 구성됩니다.
+    color = (color // 64) * 64 + 32  
     
-    # stylization 결과 위에 부드러운 스케치 윤곽선을 살짝 겹침
-    caricature = cv2.bitwise_and(cartoon, cartoon, mask=edges)
+    # 3. 색상 면 위에 검은 라인 드로잉 덮어씌우기
+    caricature = cv2.bitwise_and(color, color, mask=edges)
 
-    # 4. 처리된 이미지를 다시 byte로 인코딩하여 반환
-    success, encoded_image = cv2.imencode('.jpg', caricature, [int(cv2.IMWRITE_JPEG_QUALITY), 90])
+    # 4. 마커펜 채색의 번짐 효과를 살짝 더해 손그림 질감 유도
+    caricature = cv2.edgePreservingFilter(caricature, flags=1, sigma_s=20, sigma_r=0.2)
+
+    # 처리된 이미지를 다시 byte로 인코딩하여 반환
+    success, encoded_image = cv2.imencode('.jpg', caricature, [int(cv2.IMWRITE_JPEG_QUALITY), 95])
     if not success:
         raise ValueError("결과 이미지를 인코딩하는데 실패했습니다.")
 
