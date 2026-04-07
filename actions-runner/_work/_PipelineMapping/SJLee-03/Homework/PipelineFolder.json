@@ -1,0 +1,12 @@
+﻿{
+  "repositoryName": "SJLee-03/Homework",
+  "pipelineDirectory": "Homework",
+  "workspaceDirectory": "Homework\\Homework",
+  "repositories": {
+    "SJLee-03/Homework": {
+      "repositoryPath": "Homework\\Homework",
+      "lastRunOn": "04/08/2026 03:18:26 +09:00"
+    }
+  },
+  "lastRunOn": "04/08/2026 03:18:26 +09:00"
+}
