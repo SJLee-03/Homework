@@ -1,0 +1,11 @@
+﻿{
+  "agentId": 2,
+  "agentName": "SJ_LEE",
+  "poolId": 1,
+  "poolName": "Default",
+  "serverUrl": "https://pipelinesghubeus25.actions.githubusercontent.com/yR5dhGzQsSLSroZkntYqHJ7i2Ax8Pmep2wlsBK01sqrl0xHB9s/",
+  "gitHubUrl": "https://github.com/SJLee-03/Homework",
+  "workFolder": "_work",
+  "useV2Flow": true,
+  "serverUrlV2": "https://broker.actions.githubusercontent.com/"
+}

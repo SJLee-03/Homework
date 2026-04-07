@@ -43,3 +43,28 @@ jobs:
           # 빌드 시간 단축을 위해 이전에 생성된 캐시를 활용하고, 새 캐시를 업데이트합니다.
           cache-from: type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/face-to-character-api:buildcache
           cache-to: type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/face-to-character-api:buildcache,mode=max
+
+  deploy:
+    needs: build-and-push-image
+    # main 브랜치 push 이벤트에서만 배포 (Pull Request 시에는 실행하지 않음)
+    if: github.event_name != 'pull_request'
+    
+    # 등록된 GitHub Self-hosted Runner에서 동작하게 설정
+    runs-on: self-hosted
+
+    steps:
+      # 1. Docker Hub에서 최신 빌드된 이미지를 Pull
+      - name: Pull latest image from Docker Hub
+        run: docker pull ${{ secrets.DOCKERHUB_USERNAME }}/face-to-character-api:latest
+
+      # 2. 실행 중인 기존 컨테이너 중지 (없을 경우 에러 무시)
+      - name: Stop existing container
+        run: docker stop face-to-character-api || true
+
+      # 3. 기존 컨테이너 삭제 (없을 경우 에러 무시)
+      - name: Remove existing container
+        run: docker rm face-to-character-api || true
+
+      # 4. 새로운 이미지로 컨테이너 실행 (8000 포트 매핑)
+      - name: Run new container
+        run: docker run -d --name face-to-character-api -p 8000:8000 ${{ secrets.DOCKERHUB_USERNAME }}/face-to-character-api:latest
