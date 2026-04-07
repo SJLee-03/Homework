@@ -50,20 +50,19 @@ jobs:
     runs-on: self-hosted
 
     steps:
-      # 1. Docker Hub에서 최신 이미지 Pull (PowerShell 명시)
+      # 1. 최신 이미지 Pull
       - name: Pull latest image from Docker Hub
         shell: powershell
         run: docker pull ${{ secrets.DOCKERHUB_USERNAME }}/face-to-character-api:latest
 
-      # 2. 기존 컨테이너 중지 (2>$null 로 수정)
-      - name: Stop existing container
+      # 2 & 3. 기존 컨테이너 중지 및 삭제 (에러가 나도 무시하고 진행)
+      - name: Stop and Remove existing container
         shell: powershell
-        run: docker stop face-to-character-api 2>$null
-
-      # 3. 기존 컨테이너 삭제 (2>$null 로 수정)
-      - name: Remove existing container
-        shell: powershell
-        run: docker rm face-to-character-api 2>$null
+        run: |
+          $ErrorActionPreference = "SilentlyContinue"
+          docker stop face-to-character-api 2>$null
+          docker rm face-to-character-api 2>$null
+          $ErrorActionPreference = "Continue"
 
       # 4. 새로운 컨테이너 실행
       - name: Run new container
