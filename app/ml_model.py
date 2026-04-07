@@ -9,11 +9,12 @@ device = "cpu"
 try:
     # 전세계적으로 활발히 쓰이는 AnimeGANv2 딥러닝 모델 (사전학습 가중치: face_paint_512_v2)
     # CPU 환경에서도 적당한 속도로 동작하도록 구성합니다.
-    model = torch.hub.load("bryandlee/animegan2-pytorch:main", "generator", pretrained="face_paint_512_v2", device=device)
+    # PyTorch의 최신 보안 정책 상 다운로드할 저장소를 신뢰(trust_repo=True)해야만 컨테이너(서버) 환경에서 대화형 에러 없이 통과합니다.
+    model = torch.hub.load("bryandlee/animegan2-pytorch:main", "generator", pretrained="face_paint_512_v2", device=device, trust_repo=True)
     model.eval() # 학습이 아닌 추론(Inference) 모드로 변경
 
     # 이미지를 512px에 맞춰 자동으로 자르고 텐서(Tensor)로 변환한 뒤 다시 사진으로 뽑아주는 편리한 래퍼 함수
-    face2paint = torch.hub.load("bryandlee/animegan2-pytorch:main", "face2paint", size=512, device=device)
+    face2paint = torch.hub.load("bryandlee/animegan2-pytorch:main", "face2paint", size=512, device=device, trust_repo=True)
 except Exception as e:
     print(f"딥러닝 모델 로딩 실패!: {e}")
     model = None
