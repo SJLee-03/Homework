@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Make a character - Face to 2D</title>
+    <!-- 귀여운 폰트 추가 (Fredoka One 느낌의 라운드 폰트) -->
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700&family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-gradient: linear-gradient(135deg, #FFEBEB 0%, #FFF5E1 50%, #E1F8FF 100%);
+            --card-bg: rgba(255, 255, 255, 0.9);
+            --primary-color: #FF9A9E;
+            --text-color: #5D4037;
+            --shadow: 0 12px 35px rgba(255, 154, 158, 0.25);
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            font-family: 'Nunito', sans-serif;
+            background: var(--bg-gradient);
+            color: var(--text-color);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* 둥둥 떠다니는 장식 (구름이나 비눗방울 느낌) */
+        .bubble {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 50%;
+            z-index: -1;
+            animation: float 6s infinite ease-in-out alternate;
+        }
+        .b1 { width: 120px; height: 120px; top: 15%; left: 8%; }
+        .b2 { width: 180px; height: 180px; top: 60%; right: 5%; animation-delay: 1.5s; }
+        .b3 { width: 70px; height: 70px; top: 80%; left: 15%; animation-delay: 2.5s; background: rgba(255, 192, 203, 0.4); }
+
+        @keyframes float {
+            0% { transform: translateY(0px) scale(1); }
+            100% { transform: translateY(-30px) scale(1.1); }
+        }
+
+        header {
+            margin-top: 6vh;
+            text-align: center;
+            z-index: 10;
+        }
+
+        h1 {
+            font-family: 'Baloo 2', cursive;
+            font-size: 4rem;
+            color: #FF7B93;
+            margin: 0;
+            text-shadow: 3px 3px 0px #FFF, 5px 5px 15px rgba(255, 123, 147, 0.2);
+            letter-spacing: 2px;
+        }
+
+        .container {
+            width: 95%;
+            max-width: 1000px;
+            margin: 30px auto;
+            flex-grow: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10;
+        }
+
+        /* 업로드 구역 */
+        .upload-section {
+            background: var(--card-bg);
+            border-radius: 35px;
+            padding: 60px 40px;
+            text-align: center;
+            box-shadow: var(--shadow);
+            border: 4px dashed var(--primary-color);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            width: 100%;
+            max-width: 600px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .upload-section:hover, .upload-section.dragover {
+            transform: scale(1.03) translateY(-5px);
+            background: #FFF;
+            box-shadow: 0 20px 45px rgba(255, 154, 158, 0.4);
+            border-color: #FF7B93;
+        }
+
+        .upload-icon {
+            font-size: 5rem;
+            margin-bottom: 20px;
+        }
+
+        .upload-text {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 10px;
+            font-family: 'Baloo 2', cursive;
+        }
+
+        .upload-subtext {
+            font-size: 1.1rem;
+            color: #8D6E63;
+        }
+
+        input[type="file"] {
+            display: none;
+        }
+
+        /* 로딩 애니메이션 */
+        .loader-container {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .loader {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 25px;
+        }
+        
+        .dot {
+            width: 20px;
+            height: 20px;
+            background-color: var(--primary-color);
+            border-radius: 50%;
+            animation: bounce 0.6s infinite alternate;
+        }
+        .dot:nth-child(2) { animation-delay: 0.2s; background-color: #FFC371; }
+        .dot:nth-child(3) { animation-delay: 0.4s; background-color: #A1C4FD; }
+
+        @keyframes bounce {
+            from { transform: translateY(0); }
+            to { transform: translateY(-20px); }
+        }
+
+        /* 결과 화면 (좌우 분할) */
+        .result-section {
+            display: none;
+            width: 100%;
+            gap: 40px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .image-card {
+            background: var(--card-bg);
+            padding: 25px;
+            border-radius: 30px;
+            box-shadow: var(--shadow);
+            flex: 1;
+            min-width: 300px;
+            max-width: 450px;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+        
+        .image-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .image-card h3 {
+            font-family: 'Baloo 2', cursive;
+            color: var(--primary-color);
+            margin-top: 0;
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+        }
+
+        .img-wrapper {
+            border-radius: 20px;
+            overflow: hidden;
+            background: #FFF0F5;
+            aspect-ratio: 1; 
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 3px solid #FFEBEB;
+        }
+
+        .img-wrapper img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain; /* 사진의 전체 모습이 보이도록 설정 */
+            border-radius: 17px;
+        }
+
+        .action-buttons {
+            display: none;
+            margin-top: 20px;
+            margin-bottom: 50px;
+            text-align: center;
+            width: 100%;
+            z-index: 10;
+        }
+
+        .btn {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 15px 50px;
+            font-size: 1.3rem;
+            font-family: 'Baloo 2', cursive;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 8px 20px rgba(255, 154, 158, 0.4);
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            transform: translateY(-4px) scale(1.05);
+            box-shadow: 0 12px 25px rgba(255, 154, 158, 0.6);
+            background: #FF7B93;
+        }
+    </style>
+</head>
+<body>
+    <div class="bubble b1"></div>
+    <div class="bubble b2"></div>
+    <div class="bubble b3"></div>
+
+    <header>
+        <h1>Make a character</h1>
+    </header>
+
+    <div class="container">
+        <!-- 업로드 영역 -->
+        <div class="upload-section" id="drop-zone" onclick="document.getElementById('fileInput').click()">
+            <div class="upload-icon">📸💖✨</div>
+            <div class="upload-text">사진을 드래그하거나 클릭해주세요!</div>
+            <div class="upload-subtext">지원 포맷: JPG, PNG, WEBP</div>
+            <input type="file" id="fileInput" accept="image/*">
+        </div>
+
+        <!-- 로딩 애니메이션 -->
+        <div class="loader-container" id="loader">
+            <div class="loader">
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+            </div>
+            <div class="upload-text" style="font-size: 1.5rem;">마법을 부리는 중이에요... ✨</div>
+        </div>
+
+        <!-- 만화화 결과 영역 -->
+        <div class="result-section" id="result-view">
+            <div class="image-card">
+                <h3>Original 🖼️</h3>
+                <div class="img-wrapper">
+                    <img id="original-img" src="" alt="원본 이미지">
+                </div>
+            </div>
+            <div class="image-card">
+                <h3>Cartoonized 🪄</h3>
+                <div class="img-wrapper">
+                    <img id="cartoon-img" src="" alt="만화 버전 이미지">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 다시 시도 버튼 -->
+    <div class="action-buttons" id="action-buttons">
+        <button class="btn" onclick="resetApp()">다른 사진 변환할래요! 🌸</button>
+    </div>
+
+    <script>
+        const dropZone = document.getElementById('drop-zone');
+        const fileInput = document.getElementById('fileInput');
+        
+        const loader = document.getElementById('loader');
+        const uploadSection = document.querySelector('.upload-section');
+        const resultView = document.getElementById('result-view');
+        const actionButtons = document.getElementById('action-buttons');
+        
+        const originalImg = document.getElementById('original-img');
+        const cartoonImg = document.getElementById('cartoon-img');
+
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            dropZone.addEventListener(eventName, preventDefaults, false);
+            document.body.addEventListener(eventName, preventDefaults, false);
+        });
+
+        function preventDefaults (e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+
+        ['dragenter', 'dragover'].forEach(eventName => {
+            dropZone.addEventListener(eventName, highlight, false);
+        });
+
+        ['dragleave', 'drop'].forEach(eventName => {
+            dropZone.addEventListener(eventName, unhighlight, false);
+        });
+
+        function highlight(e) { dropZone.classList.add('dragover'); }
+        function unhighlight(e) { dropZone.classList.remove('dragover'); }
+
+        dropZone.addEventListener('drop', (e) => {
+            let dt = e.dataTransfer;
+            let files = dt.files;
+            if(files.length) handleFiles(files[0]);
+        }, false);
+
+        fileInput.addEventListener('change', function() {
+            if(this.files.length) handleFiles(this.files[0]);
+        });
+
+        function handleFiles(file) {
+            if (!file.type.startsWith('image/')) {
+                alert('이미지 파일만 올려주세요! 🐾');
+                return;
+            }
+
+            // 원본 사진 보이기
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                originalImg.src = e.target.result;
+            }
+            reader.readAsDataURL(file);
+
+            // 로딩 상태 전환
+            uploadSection.style.display = 'none';
+            loader.style.display = 'flex';
+
+            // 서버로 파일 전송
+            const formData = new FormData();
+            formData.append('file', file);
+
+            fetch('/generate-character/', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => {
+                if (!response.ok) throw new Error('서버 응답 오류');
+                return response.blob();
+            })
+            .then(blob => {
+                const objectURL = URL.createObjectURL(blob);
+                cartoonImg.src = objectURL;
+                
+                // 결과화면으로 전환
+                loader.style.display = 'none';
+                resultView.style.display = 'flex';
+                actionButtons.style.display = 'block';
+            })
+            .catch(error => {
+                alert('앗, 변환 중에 문제가 생겼어요! 😿 다시 시도해 주세요.');
+                loader.style.display = 'none';
+                uploadSection.style.display = 'block';
+                console.error('Error:', error);
+            });
+        }
+
+        function resetApp() {
+            resultView.style.display = 'none';
+            actionButtons.style.display = 'none';
+            
+            // blob url 초기화
+            if(cartoonImg.src) URL.revokeObjectURL(cartoonImg.src);
+            
+            originalImg.src = '';
+            cartoonImg.src = '';
+            fileInput.value = '';
+            
+            uploadSection.style.display = 'block';
+        }
+    </script>
+</body>
+</html>

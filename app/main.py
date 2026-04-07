@@ -1,6 +1,7 @@
 from fastapi import FastAPI, File, UploadFile, HTTPException
-from fastapi.responses import Response, JSONResponse
+from fastapi.responses import Response, JSONResponse, FileResponse
 from .ml_model import generate_character_image
+import os
 
 app = FastAPI(
     title="캐릭터 변환 API",
@@ -8,9 +9,11 @@ app = FastAPI(
     version="1.0.0"
 )
 
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
 @app.get("/")
 def read_root():
-    return {"message": "얼굴 -> 캐릭터 변환 API가 실행 중입니다. /docs에서 API 명세서를 확인하세요."}
+    return FileResponse(os.path.join(BASE_DIR, "static", "index.html"))
 
 @app.post("/generate-character/")
 async def generate_character(file: UploadFile = File(...)):
