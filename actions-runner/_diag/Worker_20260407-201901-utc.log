@@ -1,0 +1,1983 @@
+[2026-04-07 20:19:01Z INFO HostContext] No proxy settings were found based on environmental variables (http_proxy/https_proxy/HTTP_PROXY/HTTPS_PROXY)
+[2026-04-07 20:19:01Z INFO HostContext] Well known directory 'Bin': 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner\bin'
+[2026-04-07 20:19:01Z INFO HostContext] Well known directory 'Root': 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner'
+[2026-04-07 20:19:01Z INFO HostContext] Well known config file 'Credentials': 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner\.credentials'
+[2026-04-07 20:19:01Z INFO HostContext] Well known directory 'Bin': 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner\bin'
+[2026-04-07 20:19:01Z INFO HostContext] Well known directory 'Root': 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner'
+[2026-04-07 20:19:01Z INFO HostContext] Well known config file 'Runner': 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner\.runner'
+[2026-04-07 20:19:01Z INFO Worker] Version: 2.333.1
+[2026-04-07 20:19:01Z INFO Worker] Commit: 6792966801e8925346735b68c03bf9f347af4646
+[2026-04-07 20:19:01Z INFO Worker] Culture: ko-KR
+[2026-04-07 20:19:01Z INFO Worker] UI Culture: ko-KR
+[2026-04-07 20:19:01Z INFO Worker] Waiting to receive the job message from the channel.
+[2026-04-07 20:19:01Z INFO ProcessChannel] Receiving message of length 20861, with hash '4f5f3018f3d49cb5605c590abe8d2512e4668d3eae4433ba38a71e13a7684cb2'
+[2026-04-07 20:19:01Z INFO Worker] Message received.
+[2026-04-07 20:19:02Z INFO Worker] Job message:
+ {
+  "fileTable": [
+    ".github/workflows/ci.yml"
+  ],
+  "mask": [
+    {
+      "type": "regex",
+      "value": "***"
+    },
+    {
+      "type": "regex",
+      "value": "***"
+    },
+    {
+      "type": "regex",
+      "value": "***"
+    },
+    {
+      "type": "regex",
+      "value": "***"
+    },
+    {
+      "type": "regex",
+      "value": "***"
+    },
+    {
+      "type": "regex",
+      "value": "***"
+    },
+    {
+      "type": "regex",
+      "value": "***"
+    },
+    {
+      "type": "regex",
+      "value": "***"
+    },
+    {
+      "type": "regex",
+      "value": "***"
+    },
+    {
+      "type": "regex",
+      "value": "***"
+    },
+    {
+      "type": "regex",
+      "value": "***"
+    },
+    {
+      "type": "regex",
+      "value": "***"
+    },
+    {
+      "type": "regex",
+      "value": "***"
+    },
+    {
+      "type": "regex",
+      "value": "***"
+    },
+    {
+      "type": "regex",
+      "value": "***"
+    },
+    {
+      "type": "regex",
+      "value": "***"
+    },
+    {
+      "type": "regex",
+      "value": "***"
+    },
+    {
+      "type": "regex",
+      "value": "***"
+    }
+  ],
+  "steps": [
+    {
+      "type": "action",
+      "reference": {
+        "type": "script"
+      },
+      "displayNameToken": {
+        "type": 0,
+        "file": 1,
+        "line": 55,
+        "col": 15,
+        "lit": "Pull latest image from Docker Hub"
+      },
+      "contextName": "__run",
+      "inputs": {
+        "type": 2,
+        "map": [
+          {
+            "key": "script",
+            "value": {
+              "type": 3,
+              "file": 1,
+              "line": 56,
+              "col": 14,
+              "expr": "format('docker pull {0}/face-to-character-api:latest', secrets.DOCKERHUB_USERNAME)"
+            }
+          }
+        ]
+      },
+      "condition": "success()",
+      "id": "f07da23c-e5c4-4c42-b9b0-efe11856e48f",
+      "name": "__run"
+    },
+    {
+      "type": "action",
+      "reference": {
+        "type": "script"
+      },
+      "displayNameToken": {
+        "type": 0,
+        "file": 1,
+        "line": 59,
+        "col": 15,
+        "lit": "Stop and Remove existing container"
+      },
+      "contextName": "__run_2",
+      "inputs": {
+        "type": 2,
+        "map": [
+          {
+            "key": "script",
+            "value": {
+              "type": 0,
+              "file": 1,
+              "line": 61,
+              "col": 14,
+              "lit": "docker rm -f face-to-character-api"
+            }
+          }
+        ]
+      },
+      "condition": "success()",
+      "continueOnError": {
+        "type": 5,
+        "file": 1,
+        "line": 60,
+        "col": 28,
+        "bool": true
+      },
+      "id": "1af0d86c-5030-4bb6-a375-b38c914571b2",
+      "name": "__run_2"
+    },
+    {
+      "type": "action",
+      "reference": {
+        "type": "script"
+      },
+      "displayNameToken": {
+        "type": 0,
+        "file": 1,
+        "line": 64,
+        "col": 15,
+        "lit": "Run new container"
+      },
+      "contextName": "__run_3",
+      "inputs": {
+        "type": 2,
+        "map": [
+          {
+            "key": "script",
+            "value": {
+              "type": 3,
+              "file": 1,
+              "line": 65,
+              "col": 14,
+              "expr": "format('docker run -d --name face-to-character-api -p 8000:8000 --restart unless-stopped {0}/face-to-character-api:latest', secrets.DOCKERHUB_USERNAME)"
+            }
+          }
+        ]
+      },
+      "condition": "success()",
+      "id": "cc846c30-6a69-4e67-98e3-976d6e5d0a2f",
+      "name": "__run_3"
+    },
+    {
+      "type": "action",
+      "reference": {
+        "type": "script"
+      },
+      "displayNameToken": {
+        "type": 0,
+        "file": 1,
+        "line": 68,
+        "col": 15,
+        "lit": "Clean up old Docker images"
+      },
+      "contextName": "__run_4",
+      "inputs": {
+        "type": 2,
+        "map": [
+          {
+            "key": "script",
+            "value": {
+              "type": 0,
+              "file": 1,
+              "line": 70,
+              "col": 14,
+              "lit": "docker image prune -f"
+            }
+          }
+        ]
+      },
+      "condition": "success()",
+      "continueOnError": {
+        "type": 5,
+        "file": 1,
+        "line": 69,
+        "col": 28,
+        "bool": true
+      },
+      "id": "51b50854-a1ec-4ea7-8ccb-ced37eeee3fc",
+      "name": "__run_4"
+    }
+  ],
+  "variables": {
+    "Actions.EnableHttpRedirects": {
+      "value": "true"
+    },
+    "DOCKERHUB_USERNAME": {
+      "value": "***",
+      "isSecret": true
+    },
+    "DistributedTask.AddWarningToNode12Action": {
+      "value": "true"
+    },
+    "DistributedTask.AddWarningToNode16Action": {
+      "value": "true"
+    },
+    "DistributedTask.AllowRunnerContainerHooks": {
+      "value": "true"
+    },
+    "DistributedTask.DeprecateStepOutputCommands": {
+      "value": "true"
+    },
+    "DistributedTask.DetailUntarFailure": {
+      "value": "true"
+    },
+    "DistributedTask.EnableCompositeActions": {
+      "value": "true"
+    },
+    "DistributedTask.EnableJobServerQueueTelemetry": {
+      "value": "true"
+    },
+    "DistributedTask.EnhancedAnnotations": {
+      "value": "true"
+    },
+    "DistributedTask.ForceGithubJavascriptActionsToNode16": {
+      "value": "true"
+    },
+    "DistributedTask.ForceGithubJavascriptActionsToNode20": {
+      "value": "true"
+    },
+    "DistributedTask.LogTemplateErrorsAsDebugMessages": {
+      "value": "true"
+    },
+    "DistributedTask.MarkJobAsFailedOnWorkerCrash": {
+      "value": "true"
+    },
+    "DistributedTask.NewActionMetadata": {
+      "value": "true"
+    },
+    "DistributedTask.UploadStepSummary": {
+      "value": "true"
+    },
+    "DistributedTask.UseActionArchiveCache": {
+      "value": "true"
+    },
+    "DistributedTask.UseWhich2": {
+      "value": "true"
+    },
+    "RunService.FixEmbeddedIssues": {
+      "value": "true"
+    },
+    "actions.runner.requirenode24": {
+      "value": "false"
+    },
+    "actions.runner.usenode24bydefault": {
+      "value": "false"
+    },
+    "actions.runner.warnonnode20": {
+      "value": "true"
+    },
+    "actions_add_check_run_id_to_job_context": {
+      "value": "true"
+    },
+    "actions_batch_action_resolution": {
+      "value": "false"
+    },
+    "actions_container_action_runner_temp": {
+      "value": "true"
+    },
+    "actions_display_helpful_actions_download_errors": {
+      "value": "true"
+    },
+    "actions_runner_compare_workflow_parser": {
+      "value": "false"
+    },
+    "actions_runner_deprecate_linux_arm32": {
+      "value": "false"
+    },
+    "actions_runner_emit_composite_markers": {
+      "value": "false"
+    },
+    "actions_runner_kill_linux_arm32": {
+      "value": "false"
+    },
+    "actions_runner_node20_removal_date": {
+      "value": ""
+    },
+    "actions_runner_node24_default_date": {
+      "value": ""
+    },
+    "actions_service_container_command": {
+      "value": "true"
+    },
+    "actions_set_orchestration_id_env_for_actions": {
+      "value": "true"
+    },
+    "actions_skip_retry_complete_job_upon_known_errors": {
+      "value": "true"
+    },
+    "actions_snapshot_preflight_hosted_runner_check": {
+      "value": "false"
+    },
+    "actions_snapshot_preflight_image_gen_pool_check": {
+      "value": "false"
+    },
+    "actions_use_bearer_token_for_codeload": {
+      "value": "false"
+    },
+    "actions_uses_cache_service_v2": {
+      "value": "true"
+    },
+    "github_token": {
+      "value": "***",
+      "isSecret": true
+    },
+    "system.from_run_service": {
+      "value": "true"
+    },
+    "system.github.job": {
+      "value": "deploy"
+    },
+    "system.github.launch_endpoint": {
+      "value": "https://launch.actions.githubusercontent.com"
+    },
+    "system.github.results_endpoint": {
+      "value": "https://results-receiver.actions.githubusercontent.com/"
+    },
+    "system.github.results_upload_with_sdk": {
+      "value": "true"
+    },
+    "system.github.token": {
+      "value": "***",
+      "isSecret": true
+    },
+    "system.github.token.permissions": {
+      "value": "{\"Contents\":\"read\",\"Metadata\":\"read\",\"Packages\":\"read\"}"
+    },
+    "system.orchestrationId": {
+      "value": "d2398eea-7747-464c-824e-45f509b8c274.deploy.__default"
+    },
+    "system.phaseDisplayName": {
+      "value": "deploy"
+    },
+    "system.runner.lowdiskspacethreshold": {
+      "value": "100"
+    },
+    "system.runnerEnvironment": {
+      "value": "self-hosted"
+    },
+    "system.runnerGroupName": {
+      "value": "Default"
+    }
+  },
+  "messageType": "RunnerJobRequest",
+  "plan": {
+    "scopeIdentifier": "00000000-0000-0000-0000-000000000000",
+    "planType": "actions",
+    "version": 0,
+    "planId": "d2398eea-7747-464c-824e-45f509b8c274",
+    "planGroup": null,
+    "artifactUri": null,
+    "artifactLocation": null,
+    "definition": null,
+    "owner": null
+  },
+  "timeline": {
+    "id": "d2398eea-7747-464c-824e-45f509b8c274",
+    "changeId": 0,
+    "location": null
+  },
+  "jobId": "61faa0e9-07c4-5dbb-83bd-f538cfc7962c",
+  "jobDisplayName": "deploy",
+  "jobName": "__default",
+  "requestId": 0,
+  "lockedUntil": "0001-01-01T00:00:00",
+  "resources": {
+    "endpoints": [
+      {
+        "data": {
+          "ServerId": "",
+          "ServerName": "",
+          "CacheServerUrl": "https://artifactcache.actions.githubusercontent.com/yR5dhGzQsSLSroZkntYqHJ7i2Ax8Pmep2wlsBK01sqrl0xHB9s/",
+          "FeedStreamUrl": "wss://results-receiver.actions.githubusercontent.com/_ws/ingest.sock",
+          "ResultsServiceUrl": "https://results-receiver.actions.githubusercontent.com/",
+          "PipelinesServiceUrl": "https://pipelinesghubeus25.actions.githubusercontent.com/yR5dhGzQsSLSroZkntYqHJ7i2Ax8Pmep2wlsBK01sqrl0xHB9s/",
+          "GenerateIdTokenUrl": "",
+          "ConnectivityChecks": "[\"https://broker.actions.githubusercontent.com/health\",\"https://token.actions.githubusercontent.com/ready\",\"https://run.actions.githubusercontent.com/health\"]"
+        },
+        "name": "SystemVssConnection",
+        "url": "https://run-actions-3-azure-eastus.actions.githubusercontent.com/108/",
+        "authorization": {
+          "parameters": {
+            "AccessToken": "***"
+          },
+          "scheme": "OAuth"
+        },
+        "isShared": false,
+        "isReady": true
+      }
+    ]
+  },
+  "contextData": {
+    "github": {
+      "t": 2,
+      "d": [
+        {
+          "k": "ref",
+          "v": "refs/heads/main"
+        },
+        {
+          "k": "sha",
+          "v": "2c699fd1ba92cf21ec6823fe5b966bc5f4a2b6ff"
+        },
+        {
+          "k": "repository",
+          "v": "SJLee-03/Homework"
+        },
+        {
+          "k": "repository_owner",
+          "v": "SJLee-03"
+        },
+        {
+          "k": "repository_owner_id",
+          "v": "129283581"
+        },
+        {
+          "k": "repositoryUrl",
+          "v": "git://github.com/SJLee-03/Homework.git"
+        },
+        {
+          "k": "run_id",
+          "v": "24102410486"
+        },
+        {
+          "k": "run_number",
+          "v": "16"
+        },
+        {
+          "k": "retention_days",
+          "v": "90"
+        },
+        {
+          "k": "run_attempt",
+          "v": "1"
+        },
+        {
+          "k": "artifact_cache_size_limit",
+          "v": "10"
+        },
+        {
+          "k": "repository_visibility",
+          "v": "public"
+        },
+        {
+          "k": "actor_id",
+          "v": "129283581"
+        },
+        {
+          "k": "actor",
+          "v": "SJLee-03"
+        },
+        {
+          "k": "workflow",
+          "v": "Build and Push to Docker Hub"
+        },
+        {
+          "k": "head_ref",
+          "v": ""
+        },
+        {
+          "k": "base_ref",
+          "v": ""
+        },
+        {
+          "k": "event_name",
+          "v": "push"
+        },
+        {
+          "k": "server_url",
+          "v": "https://github.com"
+        },
+        {
+          "k": "api_url",
+          "v": "https://api.github.com"
+        },
+        {
+          "k": "graphql_url",
+          "v": "https://api.github.com/graphql"
+        },
+        {
+          "k": "ref_name",
+          "v": "main"
+        },
+        {
+          "k": "ref_protected",
+          "v": false
+        },
+        {
+          "k": "ref_type",
+          "v": "branch"
+        },
+        {
+          "k": "secret_source",
+          "v": "Actions"
+        },
+        {
+          "k": "event",
+          "v": {
+            "t": 2,
+            "d": [
+              {
+                "k": "after",
+                "v": "2c699fd1ba92cf21ec6823fe5b966bc5f4a2b6ff"
+              },
+              {
+                "k": "base_ref",
+                "v": null
+              },
+              {
+                "k": "before",
+                "v": "b0a548dcb6d31f46263f0da4e1c7d813a2d8d1b1"
+              },
+              {
+                "k": "commits",
+                "v": {
+                  "t": 1,
+                  "a": [
+                    {
+                      "t": 2,
+                      "d": [
+                        {
+                          "k": "author",
+                          "v": {
+                            "t": 2,
+                            "d": [
+                              {
+                                "k": "email",
+                                "v": "sjleego03@gmail.com"
+                              },
+                              {
+                                "k": "name",
+                                "v": "SJLEE-03"
+                              },
+                              {
+                                "k": "username",
+                                "v": "SJLee-03"
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "k": "committer",
+                          "v": {
+                            "t": 2,
+                            "d": [
+                              {
+                                "k": "email",
+                                "v": "sjleego03@gmail.com"
+                              },
+                              {
+                                "k": "name",
+                                "v": "SJLEE-03"
+                              },
+                              {
+                                "k": "username",
+                                "v": "SJLee-03"
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "k": "distinct",
+                          "v": true
+                        },
+                        {
+                          "k": "id",
+                          "v": "2c699fd1ba92cf21ec6823fe5b966bc5f4a2b6ff"
+                        },
+                        {
+                          "k": "message",
+                          "v": "commit3"
+                        },
+                        {
+                          "k": "timestamp",
+                          "v": "2026-04-08T05:17:58+09:00"
+                        },
+                        {
+                          "k": "tree_id",
+                          "v": "7d8f3c44050e6f171478dd04738c71c379b2e8dc"
+                        },
+                        {
+                          "k": "url",
+                          "v": "https://github.com/SJLee-03/Homework/commit/2c699fd1ba92cf21ec6823fe5b966bc5f4a2b6ff"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              },
+              {
+                "k": "compare",
+                "v": "https://github.com/SJLee-03/Homework/compare/b0a548dcb6d3...2c699fd1ba92"
+              },
+              {
+                "k": "created",
+                "v": false
+              },
+              {
+                "k": "deleted",
+                "v": false
+              },
+              {
+                "k": "forced",
+                "v": false
+              },
+              {
+                "k": "head_commit",
+                "v": {
+                  "t": 2,
+                  "d": [
+                    {
+                      "k": "author",
+                      "v": {
+                        "t": 2,
+                        "d": [
+                          {
+                            "k": "email",
+                            "v": "sjleego03@gmail.com"
+                          },
+                          {
+                            "k": "name",
+                            "v": "SJLEE-03"
+                          },
+                          {
+                            "k": "username",
+                            "v": "SJLee-03"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "k": "committer",
+                      "v": {
+                        "t": 2,
+                        "d": [
+                          {
+                            "k": "email",
+                            "v": "sjleego03@gmail.com"
+                          },
+                          {
+                            "k": "name",
+                            "v": "SJLEE-03"
+                          },
+                          {
+                            "k": "username",
+                            "v": "SJLee-03"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "k": "distinct",
+                      "v": true
+                    },
+                    {
+                      "k": "id",
+                      "v": "2c699fd1ba92cf21ec6823fe5b966bc5f4a2b6ff"
+                    },
+                    {
+                      "k": "message",
+                      "v": "commit3"
+                    },
+                    {
+                      "k": "timestamp",
+                      "v": "2026-04-08T05:17:58+09:00"
+                    },
+                    {
+                      "k": "tree_id",
+                      "v": "7d8f3c44050e6f171478dd04738c71c379b2e8dc"
+                    },
+                    {
+                      "k": "url",
+                      "v": "https://github.com/SJLee-03/Homework/commit/2c699fd1ba92cf21ec6823fe5b966bc5f4a2b6ff"
+                    }
+                  ]
+                }
+              },
+              {
+                "k": "pusher",
+                "v": {
+                  "t": 2,
+                  "d": [
+                    {
+                      "k": "email",
+                      "v": "129283581+SJLee-03@users.noreply.github.com"
+                    },
+                    {
+                      "k": "name",
+                      "v": "SJLee-03"
+                    }
+                  ]
+                }
+              },
+              {
+                "k": "ref",
+                "v": "refs/heads/main"
+              },
+              {
+                "k": "repository",
+                "v": {
+                  "t": 2,
+                  "d": [
+                    {
+                      "k": "allow_forking",
+                      "v": true
+                    },
+                    {
+                      "k": "archive_url",
+                      "v": "https://api.github.com/repos/SJLee-03/Homework/{archive_format}{/ref}"
+                    },
+                    {
+                      "k": "archived",
+                      "v": false
+                    },
+                    {
+                      "k": "assignees_url",
+                      "v": "https://api.github.com/repos/SJLee-03/Homework/assignees{/user}"
+                    },
+                    {
+                      "k": "blobs_url",
+                      "v": "https://api.github.com/repos/SJLee-03/Homework/git/blobs{/sha}"
+                    },
+                    {
+                      "k": "branches_url",
+                      "v": "https://api.github.com/repos/SJLee-03/Homework/branches{/branch}"
+                    },
+                    {
+                      "k": "clone_url",
+                      "v": "https://github.com/SJLee-03/Homework.git"
+                    },
+                    {
+                      "k": "collaborators_url",
+                      "v": "https://api.github.com/repos/SJLee-03/Homework/collaborators{/collaborator}"
+                    },
+                    {
+                      "k": "comments_url",
+                      "v": "https://api.github.com/repos/SJLee-03/Homework/comments{/number}"
+                    },
+                    {
+                      "k": "commits_url",
+                      "v": "https://api.github.com/repos/SJLee-03/Homework/commits{/sha}"
+                    },
+                    {
+                      "k": "compare_url",
+                      "v": "https://api.github.com/repos/SJLee-03/Homework/compare/{base}...{head}"
+                    },
+                    {
+                      "k": "contents_url",
+                      "v": "https://api.github.com/repos/SJLee-03/Homework/contents/{+path}"
+                    },
+                    {
+                      "k": "contributors_url",
+                      "v": "https://api.github.com/repos/SJLee-03/Homework/contributors"
+                    },
+                    {
+                      "k": "created_at",
+                      "v": 1775581975.0
+                    },
+                    {
+                      "k": "default_branch",
+                      "v": "main"
+                    },
+                    {
+                      "k": "deployments_url",
+                      "v": "https://api.github.com/repos/SJLee-03/Homework/deployments"
+                    },
+                    {
+                      "k": "description",
+                      "v": null
+                    },
+                    {
+                      "k": "disabled",
+                      "v": false
+                    },
+                    {
+                      "k": "downloads_url",
+                      "v": "https://api.github.com/repos/SJLee-03/Homework/downloads"
+                    },
+                    {
+                      "k": "events_url",
+                      "v": "https://api.github.com/repos/SJLee-03/Homework/events"
+                    },
+                    {
+                      "k": "fork",
+                      "v": false
+                    },
+                    {
+                      "k": "forks",
+                      "v": 0.0
+                    },
+                    {
+                      "k": "forks_count",
+                      "v": 0.0
+                    },
+                    {
+                      "k": "forks_url",
+                      "v": "https://api.github.com/repos/SJLee-03/Homework/forks"
+                    },
+                    {
+                      "k": "full_name",
+                      "v": "SJLee-03/Homework"
+                    },
+                    {
+                      "k": "git_commits_url",
+                      "v": "https://api.github.com/repos/SJLee-03/Homework/git/commits{/sha}"
+                    },
+                    {
+                      "k": "git_refs_url",
+                      "v": "https://api.github.com/repos/SJLee-03/Homework/git/refs{/sha}"
+                    },
+                    {
+                      "k": "git_tags_url",
+                      "v": "https://api.github.com/repos/SJLee-03/Homework/git/tags{/sha}"
+                    },
+                    {
+                      "k": "git_url",
+                      "v": "git://github.com/SJLee-03/Homework.git"
+                    },
+                    {
+                      "k": "has_discussions",
+                      "v": false
+                    },
+                    {
+                      "k": "has_downloads",
+                      "v": true
+                    },
+                    {
+                      "k": "has_issues",
+                      "v": true
+                    },
+                    {
+                      "k": "has_pages",
+                      "v": false
+                    },
+                    {
+                      "k": "has_projects",
+                      "v": true
+                    },
+                    {
+                      "k": "has_pull_requests",
+                      "v": true
+                    },
+                    {
+                      "k": "has_wiki",
+                      "v": true
+                    },
+                    {
+                      "k": "homepage",
+                      "v": null
+                    },
+                    {
+                      "k": "hooks_url",
+                      "v": "https://api.github.com/repos/SJLee-03/Homework/hooks"
+                    },
+                    {
+                      "k": "html_url",
+                      "v": "https://github.com/SJLee-03/Homework"
+                    },
+                    {
+                      "k": "id",
+                      "v": 1204082839.0
+                    },
+                    {
+                      "k": "is_template",
+                      "v": false
+                    },
+                    {
+                      "k": "issue_comment_url",
+                      "v": "https://api.github.com/repos/SJLee-03/Homework/issues/comments{/number}"
+                    },
+                    {
+                      "k": "issue_events_url",
+                      "v": "https://api.github.com/repos/SJLee-03/Homework/issues/events{/number}"
+                    },
+                    {
+                      "k": "issues_url",
+                      "v": "https://api.github.com/repos/SJLee-03/Homework/issues{/number}"
+                    },
+                    {
+                      "k": "keys_url",
+                      "v": "https://api.github.com/repos/SJLee-03/Homework/keys{/key_id}"
+                    },
+                    {
+                      "k": "labels_url",
+                      "v": "https://api.github.com/repos/SJLee-03/Homework/labels{/name}"
+                    },
+                    {
+                      "k": "language",
+                      "v": "JavaScript"
+                    },
+                    {
+                      "k": "languages_url",
+                      "v": "https://api.github.com/repos/SJLee-03/Homework/languages"
+                    },
+                    {
+                      "k": "license",
+                      "v": null
+                    },
+                    {
+                      "k": "master_branch",
+                      "v": "main"
+                    },
+                    {
+                      "k": "merges_url",
+                      "v": "https://api.github.com/repos/SJLee-03/Homework/merges"
+                    },
+                    {
+                      "k": "milestones_url",
+                      "v": "https://api.github.com/repos/SJLee-03/Homework/milestones{/number}"
+                    },
+                    {
+                      "k": "mirror_url",
+                      "v": null
+                    },
+                    {
+                      "k": "name",
+                      "v": "Homework"
+                    },
+                    {
+                      "k": "node_id",
+                      "v": "R_kgDOR8TYlw"
+                    },
+                    {
+                      "k": "notifications_url",
+                      "v": "https://api.github.com/repos/SJLee-03/Homework/notifications{?since,all,participating}"
+                    },
+                    {
+                      "k": "open_issues",
+                      "v": 0.0
+                    },
+                    {
+                      "k": "open_issues_count",
+                      "v": 0.0
+                    },
+                    {
+                      "k": "owner",
+                      "v": {
+                        "t": 2,
+                        "d": [
+                          {
+                            "k": "avatar_url",
+                            "v": "https://avatars.githubusercontent.com/u/129283581?v=4"
+                          },
+                          {
+                            "k": "email",
+                            "v": "129283581+SJLee-03@users.noreply.github.com"
+                          },
+                          {
+                            "k": "events_url",
+                            "v": "https://api.github.com/users/SJLee-03/events{/privacy}"
+                          },
+                          {
+                            "k": "followers_url",
+                            "v": "https://api.github.com/users/SJLee-03/followers"
+                          },
+                          {
+                            "k": "following_url",
+                            "v": "https://api.github.com/users/SJLee-03/following{/other_user}"
+                          },
+                          {
+                            "k": "gists_url",
+                            "v": "https://api.github.com/users/SJLee-03/gists{/gist_id}"
+                          },
+                          {
+                            "k": "gravatar_id",
+                            "v": ""
+                          },
+                          {
+                            "k": "html_url",
+                            "v": "https://github.com/SJLee-03"
+                          },
+                          {
+                            "k": "id",
+                            "v": 129283581.0
+                          },
+                          {
+                            "k": "login",
+                            "v": "SJLee-03"
+                          },
+                          {
+                            "k": "name",
+                            "v": "SJLee-03"
+                          },
+                          {
+                            "k": "node_id",
+                            "v": "U_kgDOB7S1_Q"
+                          },
+                          {
+                            "k": "organizations_url",
+                            "v": "https://api.github.com/users/SJLee-03/orgs"
+                          },
+                          {
+                            "k": "received_events_url",
+                            "v": "https://api.github.com/users/SJLee-03/received_events"
+                          },
+                          {
+                            "k": "repos_url",
+                            "v": "https://api.github.com/users/SJLee-03/repos"
+                          },
+                          {
+                            "k": "site_admin",
+                            "v": false
+                          },
+                          {
+                            "k": "starred_url",
+                            "v": "https://api.github.com/users/SJLee-03/starred{/owner}{/repo}"
+                          },
+                          {
+                            "k": "subscriptions_url",
+                            "v": "https://api.github.com/users/SJLee-03/subscriptions"
+                          },
+                          {
+                            "k": "type",
+                            "v": "User"
+                          },
+                          {
+                            "k": "url",
+                            "v": "https://api.github.com/users/SJLee-03"
+                          },
+                          {
+                            "k": "user_view_type",
+                            "v": "public"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "k": "private",
+                      "v": false
+                    },
+                    {
+                      "k": "pull_request_creation_policy",
+                      "v": "all"
+                    },
+                    {
+                      "k": "pulls_url",
+                      "v": "https://api.github.com/repos/SJLee-03/Homework/pulls{/number}"
+                    },
+                    {
+                      "k": "pushed_at",
+                      "v": 1775593090.0
+                    },
+                    {
+                      "k": "releases_url",
+                      "v": "https://api.github.com/repos/SJLee-03/Homework/releases{/id}"
+                    },
+                    {
+                      "k": "size",
+                      "v": 177261.0
+                    },
+                    {
+                      "k": "ssh_url",
+                      "v": "git@github.com:SJLee-03/Homework.git"
+                    },
+                    {
+                      "k": "stargazers",
+                      "v": 0.0
+                    },
+                    {
+                      "k": "stargazers_count",
+                      "v": 0.0
+                    },
+                    {
+                      "k": "stargazers_url",
+                      "v": "https://api.github.com/repos/SJLee-03/Homework/stargazers"
+                    },
+                    {
+                      "k": "statuses_url",
+                      "v": "https://api.github.com/repos/SJLee-03/Homework/statuses/{sha}"
+                    },
+                    {
+                      "k": "subscribers_url",
+                      "v": "https://api.github.com/repos/SJLee-03/Homework/subscribers"
+                    },
+                    {
+                      "k": "subscription_url",
+                      "v": "https://api.github.com/repos/SJLee-03/Homework/subscription"
+                    },
+                    {
+                      "k": "svn_url",
+                      "v": "https://github.com/SJLee-03/Homework"
+                    },
+                    {
+                      "k": "tags_url",
+                      "v": "https://api.github.com/repos/SJLee-03/Homework/tags"
+                    },
+                    {
+                      "k": "teams_url",
+                      "v": "https://api.github.com/repos/SJLee-03/Homework/teams"
+                    },
+                    {
+                      "k": "topics",
+                      "v": {
+                        "t": 1
+                      }
+                    },
+                    {
+                      "k": "trees_url",
+                      "v": "https://api.github.com/repos/SJLee-03/Homework/git/trees{/sha}"
+                    },
+                    {
+                      "k": "updated_at",
+                      "v": "2026-04-07T20:15:17Z"
+                    },
+                    {
+                      "k": "url",
+                      "v": "https://api.github.com/repos/SJLee-03/Homework"
+                    },
+                    {
+                      "k": "visibility",
+                      "v": "public"
+                    },
+                    {
+                      "k": "watchers",
+                      "v": 0.0
+                    },
+                    {
+                      "k": "watchers_count",
+                      "v": 0.0
+                    },
+                    {
+                      "k": "web_commit_signoff_required",
+                      "v": false
+                    }
+                  ]
+                }
+              },
+              {
+                "k": "sender",
+                "v": {
+                  "t": 2,
+                  "d": [
+                    {
+                      "k": "avatar_url",
+                      "v": "https://avatars.githubusercontent.com/u/129283581?v=4"
+                    },
+                    {
+                      "k": "events_url",
+                      "v": "https://api.github.com/users/SJLee-03/events{/privacy}"
+                    },
+                    {
+                      "k": "followers_url",
+                      "v": "https://api.github.com/users/SJLee-03/followers"
+                    },
+                    {
+                      "k": "following_url",
+                      "v": "https://api.github.com/users/SJLee-03/following{/other_user}"
+                    },
+                    {
+                      "k": "gists_url",
+                      "v": "https://api.github.com/users/SJLee-03/gists{/gist_id}"
+                    },
+                    {
+                      "k": "gravatar_id",
+                      "v": ""
+                    },
+                    {
+                      "k": "html_url",
+                      "v": "https://github.com/SJLee-03"
+                    },
+                    {
+                      "k": "id",
+                      "v": 129283581.0
+                    },
+                    {
+                      "k": "login",
+                      "v": "SJLee-03"
+                    },
+                    {
+                      "k": "node_id",
+                      "v": "U_kgDOB7S1_Q"
+                    },
+                    {
+                      "k": "organizations_url",
+                      "v": "https://api.github.com/users/SJLee-03/orgs"
+                    },
+                    {
+                      "k": "received_events_url",
+                      "v": "https://api.github.com/users/SJLee-03/received_events"
+                    },
+                    {
+                      "k": "repos_url",
+                      "v": "https://api.github.com/users/SJLee-03/repos"
+                    },
+                    {
+                      "k": "site_admin",
+                      "v": false
+                    },
+                    {
+                      "k": "starred_url",
+                      "v": "https://api.github.com/users/SJLee-03/starred{/owner}{/repo}"
+                    },
+                    {
+                      "k": "subscriptions_url",
+                      "v": "https://api.github.com/users/SJLee-03/subscriptions"
+                    },
+                    {
+                      "k": "type",
+                      "v": "User"
+                    },
+                    {
+                      "k": "url",
+                      "v": "https://api.github.com/users/SJLee-03"
+                    },
+                    {
+                      "k": "user_view_type",
+                      "v": "public"
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        {
+          "k": "workflow_ref",
+          "v": "SJLee-03/Homework/.github/workflows/ci.yml@refs/heads/main"
+        },
+        {
+          "k": "workflow_sha",
+          "v": "2c699fd1ba92cf21ec6823fe5b966bc5f4a2b6ff"
+        },
+        {
+          "k": "repository_id",
+          "v": "1204082839"
+        },
+        {
+          "k": "triggering_actor",
+          "v": "SJLee-03"
+        }
+      ]
+    },
+    "inputs": {
+      "t": 2
+    },
+    "job": {
+      "t": 2,
+      "d": [
+        {
+          "k": "check_run_id",
+          "v": 70317011163.0
+        }
+      ]
+    },
+    "matrix": null,
+    "needs": {
+      "t": 2,
+      "d": [
+        {
+          "k": "build-and-push-image",
+          "v": {
+            "t": 2,
+            "d": [
+              {
+                "k": "result",
+                "v": "success"
+              },
+              {
+                "k": "outputs",
+                "v": {
+                  "t": 2
+                }
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "strategy": {
+      "t": 2,
+      "d": [
+        {
+          "k": "fail-fast",
+          "v": true
+        },
+        {
+          "k": "job-index",
+          "v": 0.0
+        },
+        {
+          "k": "job-total",
+          "v": 1.0
+        },
+        {
+          "k": "max-parallel",
+          "v": 1.0
+        }
+      ]
+    },
+    "vars": {
+      "t": 2
+    }
+  },
+  "billingOwnerId": "U_kgDOB7S1_Q"
+}
+[2026-04-07 20:19:02Z INFO JobRunner] Job ID 61faa0e9-07c4-5dbb-83bd-f538cfc7962c
+[2026-04-07 20:19:02Z INFO ConfigurationStore] currentAssemblyLocation: C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner\bin\Runner.Worker.dll
+[2026-04-07 20:19:02Z INFO HostContext] Well known directory 'Bin': 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner\bin'
+[2026-04-07 20:19:02Z INFO ConfigurationStore] binPath: C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner\bin
+[2026-04-07 20:19:02Z INFO HostContext] Well known directory 'Bin': 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner\bin'
+[2026-04-07 20:19:02Z INFO HostContext] Well known directory 'Root': 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner'
+[2026-04-07 20:19:02Z INFO ConfigurationStore] RootFolder: C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner
+[2026-04-07 20:19:02Z INFO HostContext] Well known directory 'Bin': 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner\bin'
+[2026-04-07 20:19:02Z INFO HostContext] Well known directory 'Root': 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner'
+[2026-04-07 20:19:02Z INFO HostContext] Well known config file 'Runner': 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner\.runner'
+[2026-04-07 20:19:02Z INFO ConfigurationStore] ConfigFilePath: C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner\.runner
+[2026-04-07 20:19:02Z INFO HostContext] Well known directory 'Bin': 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner\bin'
+[2026-04-07 20:19:02Z INFO HostContext] Well known directory 'Root': 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner'
+[2026-04-07 20:19:02Z INFO HostContext] Well known config file 'MigratedRunner': 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner\.runner_migrated'
+[2026-04-07 20:19:02Z INFO ConfigurationStore] MigratedConfigFilePath: C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner\.runner_migrated
+[2026-04-07 20:19:02Z INFO HostContext] Well known directory 'Bin': 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner\bin'
+[2026-04-07 20:19:02Z INFO HostContext] Well known directory 'Root': 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner'
+[2026-04-07 20:19:02Z INFO HostContext] Well known config file 'Credentials': 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner\.credentials'
+[2026-04-07 20:19:02Z INFO ConfigurationStore] CredFilePath: C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner\.credentials
+[2026-04-07 20:19:02Z INFO HostContext] Well known directory 'Bin': 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner\bin'
+[2026-04-07 20:19:02Z INFO HostContext] Well known directory 'Root': 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner'
+[2026-04-07 20:19:02Z INFO HostContext] Well known config file 'MigratedCredentials': 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner\.credentials_migrated'
+[2026-04-07 20:19:02Z INFO ConfigurationStore] MigratedCredFilePath: C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner\.credentials_migrated
+[2026-04-07 20:19:02Z INFO HostContext] Well known directory 'Bin': 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner\bin'
+[2026-04-07 20:19:02Z INFO HostContext] Well known directory 'Root': 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner'
+[2026-04-07 20:19:02Z INFO HostContext] Well known config file 'Service': 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner\.service'
+[2026-04-07 20:19:02Z INFO ConfigurationStore] ServiceConfigFilePath: C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner\.service
+[2026-04-07 20:19:02Z INFO ConfigurationStore] Read setting file: 387 chars
+[2026-04-07 20:19:02Z INFO JobRunner] Initializing launch client
+[2026-04-07 20:19:02Z INFO JobServerQueue] Initializing results client
+[2026-04-07 20:19:02Z INFO ResultServer] Creating websocket client ...wss://results-receiver.actions.githubusercontent.com/_ws/ingest.sock
+[2026-04-07 20:19:02Z INFO ResultServer] Attempting to start websocket client with delay 00:00:00.
+[2026-04-07 20:19:02Z INFO JobServerQueue] Start process web console line queue.
+[2026-04-07 20:19:02Z INFO JobServerQueue] Start process file upload queue.
+[2026-04-07 20:19:02Z INFO JobServerQueue] Start results file upload queue.
+[2026-04-07 20:19:02Z INFO JobServerQueue] Starting results-based upload queue...
+[2026-04-07 20:19:02Z INFO JobServerQueue] Start process timeline update queue.
+[2026-04-07 20:19:02Z INFO ExecutionContext] Initializing Job context
+[2026-04-07 20:19:02Z INFO ExecutionContext] Initialize GitHub context
+[2026-04-07 20:19:02Z INFO ExecutionContext] Initialize Env context
+[2026-04-07 20:19:02Z INFO HostContext] Well known directory 'Bin': 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner\bin'
+[2026-04-07 20:19:02Z INFO HostContext] Well known directory 'Root': 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner'
+[2026-04-07 20:19:02Z INFO HostContext] Well known directory 'Diag': 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner\_diag'
+[2026-04-07 20:19:02Z INFO HostContext] Well known directory 'Bin': 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner\bin'
+[2026-04-07 20:19:02Z INFO HostContext] Well known directory 'Root': 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner'
+[2026-04-07 20:19:02Z INFO HostContext] Well known directory 'Diag': 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner\_diag'
+[2026-04-07 20:19:02Z INFO JobRunner] Starting the job execution context.
+[2026-04-07 20:19:02Z INFO HostContext] Well known directory 'Bin': 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner\bin'
+[2026-04-07 20:19:02Z INFO HostContext] Well known directory 'Root': 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner'
+[2026-04-07 20:19:02Z INFO HostContext] Well known directory 'Work': 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner\_work'
+[2026-04-07 20:19:02Z INFO JobRunner] Validating directory permissions for: 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner\_work'
+[2026-04-07 20:19:02Z INFO HostContext] Well known directory 'Bin': 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner\bin'
+[2026-04-07 20:19:02Z INFO HostContext] Well known directory 'Root': 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner'
+[2026-04-07 20:19:02Z INFO HostContext] Well known directory 'Work': 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner\_work'
+[2026-04-07 20:19:02Z INFO HostContext] Well known directory 'Tools': 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner\_work\_tool'
+[2026-04-07 20:19:02Z INFO HostContext] Well known directory 'Bin': 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner\bin'
+[2026-04-07 20:19:02Z INFO HostContext] Well known directory 'Root': 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner'
+[2026-04-07 20:19:02Z INFO HostContext] Well known directory 'Work': 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner\_work'
+[2026-04-07 20:19:02Z INFO HostContext] Well known directory 'Temp': 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner\_work\_temp'
+[2026-04-07 20:19:02Z INFO JobRunner] Getting job extension.
+[2026-04-07 20:19:02Z INFO JobRunner] Initialize job. Getting all job steps.
+[2026-04-07 20:19:02Z INFO HostContext] Well known directory 'Bin': 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner\bin'
+[2026-04-07 20:19:02Z INFO HostContext] Well known directory 'Root': 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner'
+[2026-04-07 20:19:02Z INFO HostContext] Well known directory 'Diag': 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner\_diag'
+[2026-04-07 20:19:02Z INFO HostContext] Well known directory 'Bin': 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner\bin'
+[2026-04-07 20:19:02Z INFO HostContext] Well known directory 'Root': 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner'
+[2026-04-07 20:19:02Z INFO HostContext] Well known directory 'Diag': 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner\_diag'
+[2026-04-07 20:19:02Z INFO HostContext] Well known directory 'Bin': 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner\bin'
+[2026-04-07 20:19:02Z INFO HostContext] Well known directory 'Root': 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner'
+[2026-04-07 20:19:02Z INFO HostContext] Well known config file 'Credentials': 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner\.credentials'
+[2026-04-07 20:19:02Z INFO HostContext] Well known directory 'Bin': 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner\bin'
+[2026-04-07 20:19:02Z INFO HostContext] Well known directory 'Root': 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner'
+[2026-04-07 20:19:02Z INFO HostContext] Well known config file 'SetupInfo': 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner\.setup_info'
+[2026-04-07 20:19:02Z INFO HostContext] Well known directory 'Bin': 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner\bin'
+[2026-04-07 20:19:02Z INFO HostContext] Well known directory 'Root': 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner'
+[2026-04-07 20:19:02Z INFO HostContext] Well known directory 'Work': 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner\_work'
+[2026-04-07 20:19:02Z INFO PipelineDirectoryManager] Loading tracking config if exists: C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner\_work\_PipelineMapping\SJLee-03/Homework\PipelineFolder.json
+[2026-04-07 20:19:02Z INFO PipelineDirectoryManager] Updating job run properties.
+[2026-04-07 20:19:02Z INFO HostContext] Well known directory 'Bin': 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner\bin'
+[2026-04-07 20:19:02Z INFO HostContext] Well known directory 'Root': 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner'
+[2026-04-07 20:19:02Z INFO HostContext] Well known directory 'Work': 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner\_work'
+[2026-04-07 20:19:02Z INFO HostContext] Well known directory 'Bin': 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner\bin'
+[2026-04-07 20:19:02Z INFO HostContext] Well known directory 'Root': 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner'
+[2026-04-07 20:19:02Z INFO HostContext] Well known directory 'Work': 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner\_work'
+[2026-04-07 20:19:02Z INFO HostContext] Well known directory 'Bin': 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner\bin'
+[2026-04-07 20:19:02Z INFO HostContext] Well known directory 'Root': 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner'
+[2026-04-07 20:19:02Z INFO HostContext] Well known directory 'Work': 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner\_work'
+[2026-04-07 20:19:02Z INFO JobExtension] Downloading actions
+[2026-04-07 20:19:02Z INFO HostContext] Well known directory 'Bin': 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner\bin'
+[2026-04-07 20:19:02Z INFO HostContext] Well known directory 'Root': 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner'
+[2026-04-07 20:19:02Z INFO HostContext] Well known directory 'Work': 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner\_work'
+[2026-04-07 20:19:02Z INFO HostContext] Well known directory 'Actions': 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner\_work\_actions'
+[2026-04-07 20:19:02Z INFO JobExtension] Adding .
+[2026-04-07 20:19:02Z INFO JobExtension] Adding .
+[2026-04-07 20:19:02Z INFO JobExtension] Adding .
+[2026-04-07 20:19:02Z INFO JobExtension] Adding .
+[2026-04-07 20:19:02Z INFO HostContext] Well known directory 'Bin': 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner\bin'
+[2026-04-07 20:19:02Z INFO HostContext] Well known directory 'Root': 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner'
+[2026-04-07 20:19:02Z INFO HostContext] Well known directory 'Diag': 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner\_diag'
+[2026-04-07 20:19:02Z INFO HostContext] Well known directory 'Bin': 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner\bin'
+[2026-04-07 20:19:02Z INFO HostContext] Well known directory 'Root': 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner'
+[2026-04-07 20:19:02Z INFO HostContext] Well known directory 'Diag': 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner\_diag'
+[2026-04-07 20:19:02Z INFO HostContext] Well known directory 'Bin': 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner\bin'
+[2026-04-07 20:19:02Z INFO HostContext] Well known directory 'Root': 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner'
+[2026-04-07 20:19:02Z INFO HostContext] Well known directory 'Diag': 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner\_diag'
+[2026-04-07 20:19:02Z INFO HostContext] Well known directory 'Bin': 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner\bin'
+[2026-04-07 20:19:02Z INFO HostContext] Well known directory 'Root': 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner'
+[2026-04-07 20:19:02Z INFO HostContext] Well known directory 'Diag': 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner\_diag'
+[2026-04-07 20:19:02Z INFO HostContext] Well known directory 'Bin': 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner\bin'
+[2026-04-07 20:19:02Z INFO HostContext] Well known directory 'Root': 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner'
+[2026-04-07 20:19:02Z INFO HostContext] Well known directory 'Diag': 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner\_diag'
+[2026-04-07 20:19:02Z INFO HostContext] Well known directory 'Bin': 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner\bin'
+[2026-04-07 20:19:02Z INFO HostContext] Well known directory 'Root': 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner'
+[2026-04-07 20:19:02Z INFO HostContext] Well known directory 'Diag': 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner\_diag'
+[2026-04-07 20:19:02Z INFO HostContext] Well known directory 'Bin': 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner\bin'
+[2026-04-07 20:19:02Z INFO HostContext] Well known directory 'Root': 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner'
+[2026-04-07 20:19:02Z INFO HostContext] Well known directory 'Diag': 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner\_diag'
+[2026-04-07 20:19:02Z INFO HostContext] Well known directory 'Bin': 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner\bin'
+[2026-04-07 20:19:02Z INFO HostContext] Well known directory 'Root': 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner'
+[2026-04-07 20:19:02Z INFO HostContext] Well known directory 'Diag': 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner\_diag'
+[2026-04-07 20:19:02Z INFO JobExtension] Total accessible running process: 371.
+[2026-04-07 20:19:02Z INFO HostContext] Well known directory 'Bin': 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner\bin'
+[2026-04-07 20:19:02Z INFO HostContext] Well known directory 'Root': 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner'
+[2026-04-07 20:19:02Z INFO HostContext] Well known directory 'Work': 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner\_work'
+[2026-04-07 20:19:02Z INFO JobExtension] Start checking server connectivity.
+[2026-04-07 20:19:02Z INFO JobExtension] Check server connectivity for https://broker.actions.githubusercontent.com/health.
+[2026-04-07 20:19:02Z INFO JobExtension] Check server connectivity for https://token.actions.githubusercontent.com/ready.
+[2026-04-07 20:19:02Z INFO JobExtension] Check server connectivity for https://run.actions.githubusercontent.com/health.
+[2026-04-07 20:19:02Z INFO JobExtension] Start checking service connectivity in background.
+[2026-04-07 20:19:02Z INFO ExecutionContext] Publish step telemetry for current step {
+  "action": "setup_job",
+  "type": "runner",
+  "stage": "Pre",
+  "stepId": "aca30151-aeea-47c6-ba76-2aadcb5101b3",
+  "result": "succeeded",
+  "errorMessages": [],
+  "executionTimeInSeconds": 1,
+  "startTime": "2026-04-07T20:19:02.1850437Z",
+  "finishTime": "2026-04-07T20:19:02.3063324Z"
+}.
+[2026-04-07 20:19:02Z INFO JobRunner] Total job steps: 4.
+[2026-04-07 20:19:02Z INFO JobRunner] Run all job steps.
+[2026-04-07 20:19:02Z INFO StepsRunner] Processing step: DisplayName='Pull latest image from Docker Hub'
+[2026-04-07 20:19:02Z INFO StepsRunner] Evaluating: success()
+[2026-04-07 20:19:02Z INFO StepsRunner] Result: true
+[2026-04-07 20:19:02Z INFO StepsRunner] Starting the step.
+[2026-04-07 20:19:02Z INFO HostContext] Well known directory 'Bin': 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner\bin'
+[2026-04-07 20:19:02Z INFO HostContext] Well known directory 'Root': 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner'
+[2026-04-07 20:19:02Z INFO HostContext] Well known directory 'Work': 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner\_work'
+[2026-04-07 20:19:02Z INFO StepsRunner] Which2: 'chcp'
+[2026-04-07 20:19:02Z INFO StepsRunner] Location: 'C:\windows\system32\chcp.COM'
+[2026-04-07 20:19:02Z INFO ProcessInvokerWrapper] Starting process:
+[2026-04-07 20:19:02Z INFO ProcessInvokerWrapper]   File name: 'C:\windows\system32\chcp.COM'
+[2026-04-07 20:19:02Z INFO ProcessInvokerWrapper]   Arguments: '65001'
+[2026-04-07 20:19:02Z INFO ProcessInvokerWrapper]   Working directory: 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner\_work'
+[2026-04-07 20:19:02Z INFO ProcessInvokerWrapper]   Require exit code zero: 'False'
+[2026-04-07 20:19:02Z INFO ProcessInvokerWrapper]   Encoding web name:  ; code page: ''
+[2026-04-07 20:19:02Z INFO ProcessInvokerWrapper]   Force kill process on cancellation: 'False'
+[2026-04-07 20:19:02Z INFO ProcessInvokerWrapper]   Redirected STDIN: 'False'
+[2026-04-07 20:19:02Z INFO ProcessInvokerWrapper]   Persist current code page: 'True'
+[2026-04-07 20:19:02Z INFO ProcessInvokerWrapper]   Keep redirected STDIN open: 'False'
+[2026-04-07 20:19:02Z INFO ProcessInvokerWrapper]   High priority process: 'False'
+[2026-04-07 20:19:02Z INFO ProcessInvokerWrapper] Process started with process id 26944, waiting for process exit.
+[2026-04-07 20:19:02Z INFO Worker] Listening for cancel message from the channel.
+[2026-04-07 20:19:02Z INFO Worker] Waiting for the job to complete or for a cancel message from the channel.
+[2026-04-07 20:19:02Z INFO ProcessInvokerWrapper] STDOUT/STDERR stream read finished.
+[2026-04-07 20:19:02Z INFO ProcessInvokerWrapper] STDOUT/STDERR stream read finished.
+[2026-04-07 20:19:02Z INFO ProcessInvokerWrapper] Finished process 26944 with exit code 0, and elapsed time 00:00:00.0687302.
+[2026-04-07 20:19:02Z INFO StepsRunner] Successfully returned to code page 65001 (UTF8)
+[2026-04-07 20:19:02Z INFO HostContext] Well known directory 'Bin': 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner\bin'
+[2026-04-07 20:19:02Z INFO HostContext] Well known directory 'Root': 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner'
+[2026-04-07 20:19:02Z INFO HostContext] Well known directory 'Work': 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner\_work'
+[2026-04-07 20:19:02Z INFO HostContext] Well known directory 'Temp': 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner\_work\_temp'
+[2026-04-07 20:19:02Z INFO ExecutionContext] Write event payload to C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner\_work\_temp\_github_workflow\event.json
+[2026-04-07 20:19:02Z INFO HostContext] Well known directory 'Bin': 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner\bin'
+[2026-04-07 20:19:02Z INFO HostContext] Well known directory 'Root': 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner'
+[2026-04-07 20:19:02Z INFO HostContext] Well known directory 'Work': 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner\_work'
+[2026-04-07 20:19:02Z INFO HostContext] Well known directory 'Temp': 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner\_work\_temp'
+[2026-04-07 20:19:02Z INFO ExtensionManager] Getting extensions for interface: 'GitHub.Runner.Worker.IFileCommandExtension'
+[2026-04-07 20:19:02Z INFO ExtensionManager] Creating instance: GitHub.Runner.Worker.AddPathFileCommand, Runner.Worker
+[2026-04-07 20:19:02Z INFO ExtensionManager] Creating instance: GitHub.Runner.Worker.SetEnvFileCommand, Runner.Worker
+[2026-04-07 20:19:02Z INFO ExtensionManager] Creating instance: GitHub.Runner.Worker.CreateStepSummaryCommand, Runner.Worker
+[2026-04-07 20:19:02Z INFO ExtensionManager] Creating instance: GitHub.Runner.Worker.SaveStateFileCommand, Runner.Worker
+[2026-04-07 20:19:02Z INFO ExtensionManager] Creating instance: GitHub.Runner.Worker.SetOutputFileCommand, Runner.Worker
+[2026-04-07 20:19:02Z INFO ExtensionManager] Getting extensions for interface: 'GitHub.Runner.Worker.IActionCommandExtension'
+[2026-04-07 20:19:02Z INFO ExtensionManager] Creating instance: GitHub.Runner.Worker.InternalPluginSetRepoPathCommandExtension, Runner.Worker
+[2026-04-07 20:19:02Z INFO ExtensionManager] Creating instance: GitHub.Runner.Worker.SetEnvCommandExtension, Runner.Worker
+[2026-04-07 20:19:02Z INFO ExtensionManager] Creating instance: GitHub.Runner.Worker.SetOutputCommandExtension, Runner.Worker
+[2026-04-07 20:19:02Z INFO ExtensionManager] Creating instance: GitHub.Runner.Worker.SaveStateCommandExtension, Runner.Worker
+[2026-04-07 20:19:02Z INFO ExtensionManager] Creating instance: GitHub.Runner.Worker.AddPathCommandExtension, Runner.Worker
+[2026-04-07 20:19:02Z INFO ExtensionManager] Creating instance: GitHub.Runner.Worker.AddMaskCommandExtension, Runner.Worker
+[2026-04-07 20:19:02Z INFO ExtensionManager] Creating instance: GitHub.Runner.Worker.AddMatcherCommandExtension, Runner.Worker
+[2026-04-07 20:19:02Z INFO ExtensionManager] Creating instance: GitHub.Runner.Worker.RemoveMatcherCommandExtension, Runner.Worker
+[2026-04-07 20:19:02Z INFO ExtensionManager] Creating instance: GitHub.Runner.Worker.WarningCommandExtension, Runner.Worker
+[2026-04-07 20:19:02Z INFO ExtensionManager] Creating instance: GitHub.Runner.Worker.ErrorCommandExtension, Runner.Worker
+[2026-04-07 20:19:02Z INFO ExtensionManager] Creating instance: GitHub.Runner.Worker.NoticeCommandExtension, Runner.Worker
+[2026-04-07 20:19:02Z INFO ExtensionManager] Creating instance: GitHub.Runner.Worker.DebugCommandExtension, Runner.Worker
+[2026-04-07 20:19:02Z INFO ExtensionManager] Creating instance: GitHub.Runner.Worker.GroupCommandExtension, Runner.Worker
+[2026-04-07 20:19:02Z INFO ExtensionManager] Creating instance: GitHub.Runner.Worker.EndGroupCommandExtension, Runner.Worker
+[2026-04-07 20:19:02Z INFO ExtensionManager] Creating instance: GitHub.Runner.Worker.EchoCommandExtension, Runner.Worker
+[2026-04-07 20:19:02Z INFO ActionCommandManager] Register action command extension for command internal-set-repo-path
+[2026-04-07 20:19:02Z INFO ActionCommandManager] Register action command extension for command set-env
+[2026-04-07 20:19:02Z INFO ActionCommandManager] Register action command extension for command set-output
+[2026-04-07 20:19:02Z INFO ActionCommandManager] Register action command extension for command save-state
+[2026-04-07 20:19:02Z INFO ActionCommandManager] Register action command extension for command add-path
+[2026-04-07 20:19:02Z INFO ActionCommandManager] Register action command extension for command add-mask
+[2026-04-07 20:19:02Z INFO ActionCommandManager] Register action command extension for command add-matcher
+[2026-04-07 20:19:02Z INFO ActionCommandManager] Register action command extension for command remove-matcher
+[2026-04-07 20:19:02Z INFO ActionCommandManager] Register action command extension for command warning
+[2026-04-07 20:19:02Z INFO ActionCommandManager] Register action command extension for command error
+[2026-04-07 20:19:02Z INFO ActionCommandManager] Register action command extension for command notice
+[2026-04-07 20:19:02Z INFO ActionCommandManager] Register action command extension for command debug
+[2026-04-07 20:19:02Z INFO ActionCommandManager] Register action command extension for command group
+[2026-04-07 20:19:02Z INFO ActionCommandManager] Register action command extension for command endgroup
+[2026-04-07 20:19:02Z INFO ActionCommandManager] Register action command extension for command echo
+[2026-04-07 20:19:02Z INFO ScriptHandler] Which2: 'pwsh'
+[2026-04-07 20:19:02Z INFO ScriptHandler] pwsh: command not found. Make sure 'pwsh' is installed and its location included in the 'Path' environment variable.
+[2026-04-07 20:19:02Z INFO ScriptHandler] Defaulting to powershell
+[2026-04-07 20:19:02Z INFO ScriptHandler] Which2: 'powershell'
+[2026-04-07 20:19:02Z INFO ScriptHandler] Location: 'C:\windows\System32\WindowsPowerShell\v1.0\powershell.EXE'
+[2026-04-07 20:19:02Z INFO HostContext] Well known directory 'Bin': 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner\bin'
+[2026-04-07 20:19:02Z INFO HostContext] Well known directory 'Root': 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner'
+[2026-04-07 20:19:02Z INFO HostContext] Well known directory 'Work': 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner\_work'
+[2026-04-07 20:19:02Z INFO HostContext] Well known directory 'Temp': 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner\_work\_temp'
+[2026-04-07 20:19:02Z INFO ScriptHandler] Which2: 'pwsh'
+[2026-04-07 20:19:02Z INFO ScriptHandler] pwsh: command not found. Make sure 'pwsh' is installed and its location included in the 'Path' environment variable.
+[2026-04-07 20:19:02Z INFO ScriptHandler] Defaulting to powershell
+[2026-04-07 20:19:02Z INFO ScriptHandler] Which2: 'powershell'
+[2026-04-07 20:19:02Z INFO ScriptHandler] Location: 'C:\windows\System32\WindowsPowerShell\v1.0\powershell.EXE'
+[2026-04-07 20:19:02Z INFO ProcessInvokerWrapper] Starting process:
+[2026-04-07 20:19:02Z INFO ProcessInvokerWrapper]   File name: 'C:\windows\System32\WindowsPowerShell\v1.0\powershell.EXE'
+[2026-04-07 20:19:02Z INFO ProcessInvokerWrapper]   Arguments: '-command ". 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner\_work\_temp\46dc444d-509c-4bd4-9e83-c248cd3964d7.ps1'"'
+[2026-04-07 20:19:02Z INFO ProcessInvokerWrapper]   Working directory: 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner\_work\Homework\Homework'
+[2026-04-07 20:19:02Z INFO ProcessInvokerWrapper]   Require exit code zero: 'False'
+[2026-04-07 20:19:02Z INFO ProcessInvokerWrapper]   Encoding web name:  ; code page: ''
+[2026-04-07 20:19:02Z INFO ProcessInvokerWrapper]   Force kill process on cancellation: 'False'
+[2026-04-07 20:19:02Z INFO ProcessInvokerWrapper]   Redirected STDIN: 'False'
+[2026-04-07 20:19:02Z INFO ProcessInvokerWrapper]   Persist current code page: 'True'
+[2026-04-07 20:19:02Z INFO ProcessInvokerWrapper]   Keep redirected STDIN open: 'False'
+[2026-04-07 20:19:02Z INFO ProcessInvokerWrapper]   High priority process: 'False'
+[2026-04-07 20:19:02Z INFO ProcessInvokerWrapper] Process started with process id 22772, waiting for process exit.
+[2026-04-07 20:19:02Z INFO ResultServer] Successfully started websocket client.
+[2026-04-07 20:19:02Z INFO JobServerQueue] Try to append 1 batches web console lines for record 'aca30151-aeea-47c6-ba76-2aadcb5101b3', success rate: 1/1.
+[2026-04-07 20:19:03Z INFO JobServerQueue] Got a step log file to send to results service.
+[2026-04-07 20:19:03Z INFO JobServerQueue] Starting upload of step log file to results service ResultsLog, C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner\_diag\blocks\d2398eea-7747-464c-824e-45f509b8c274_aca30151-aeea-47c6-ba76-2aadcb5101b3.1
+[2026-04-07 20:19:03Z INFO JobServerQueue] Try to upload 1 log files or attachments, success rate: 1/1.
+[2026-04-07 20:19:03Z INFO JobServerQueue] Try to append 1 batches web console lines for record 'f07da23c-e5c4-4c42-b9b0-efe11856e48f', success rate: 1/1.
+[2026-04-07 20:19:03Z INFO JobServerQueue] Job timeline record has been updated for the first time.
+[2026-04-07 20:19:04Z INFO JobServerQueue] Tried to upload 1 file(s) to results, success rate: 1/1.
+[2026-04-07 20:19:05Z INFO JobServerQueue] Try to append 1 batches web console lines for record 'f07da23c-e5c4-4c42-b9b0-efe11856e48f', success rate: 1/1.
+[2026-04-07 20:19:07Z INFO JobServerQueue] Try to append 1 batches web console lines for record 'f07da23c-e5c4-4c42-b9b0-efe11856e48f', success rate: 1/1.
+[2026-04-07 20:19:08Z INFO JobServerQueue] Try to append 1 batches web console lines for record 'f07da23c-e5c4-4c42-b9b0-efe11856e48f', success rate: 1/1.
+[2026-04-07 20:19:08Z INFO JobServerQueue] Try to append 1 batches web console lines for record 'f07da23c-e5c4-4c42-b9b0-efe11856e48f', success rate: 1/1.
+[2026-04-07 20:19:08Z INFO ProcessInvokerWrapper] STDOUT/STDERR stream read finished.
+[2026-04-07 20:19:08Z INFO ProcessInvokerWrapper] STDOUT/STDERR stream read finished.
+[2026-04-07 20:19:08Z INFO ProcessInvokerWrapper] Finished process 22772 with exit code 0, and elapsed time 00:00:06.3022957.
+[2026-04-07 20:19:08Z INFO CreateStepSummaryCommand] Step Summary file (C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner\_work\_temp\_runner_file_commands\step_summary_919bd34b-e32f-4b8a-b51c-049248a48cab) is empty; skipping attachment upload
+[2026-04-07 20:19:08Z INFO StepsRunner] Step result: 
+[2026-04-07 20:19:08Z INFO ExecutionContext] Publish step telemetry for current step {
+  "action": "powershell",
+  "type": "run",
+  "stage": "Main",
+  "stepId": "f07da23c-e5c4-4c42-b9b0-efe11856e48f",
+  "stepContextName": "__run",
+  "result": "succeeded",
+  "errorMessages": [],
+  "executionTimeInSeconds": 7,
+  "startTime": "2026-04-07T20:19:02.328039Z",
+  "finishTime": "2026-04-07T20:19:08.9088885Z"
+}.
+[2026-04-07 20:19:08Z INFO StepsRunner] No need for updating job result with current step result 'Succeeded'.
+[2026-04-07 20:19:08Z INFO StepsRunner] Current state: job state = ''
+[2026-04-07 20:19:08Z INFO StepsRunner] Processing step: DisplayName='Stop and Remove existing container'
+[2026-04-07 20:19:08Z INFO StepsRunner] Evaluating: success()
+[2026-04-07 20:19:08Z INFO StepsRunner] Result: true
+[2026-04-07 20:19:08Z INFO StepsRunner] Starting the step.
+[2026-04-07 20:19:08Z INFO HostContext] Well known directory 'Bin': 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner\bin'
+[2026-04-07 20:19:08Z INFO HostContext] Well known directory 'Root': 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner'
+[2026-04-07 20:19:08Z INFO HostContext] Well known directory 'Work': 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner\_work'
+[2026-04-07 20:19:08Z INFO StepsRunner] Which2: 'chcp'
+[2026-04-07 20:19:08Z INFO StepsRunner] Location: 'C:\windows\system32\chcp.COM'
+[2026-04-07 20:19:08Z INFO ProcessInvokerWrapper] Starting process:
+[2026-04-07 20:19:08Z INFO ProcessInvokerWrapper]   File name: 'C:\windows\system32\chcp.COM'
+[2026-04-07 20:19:08Z INFO ProcessInvokerWrapper]   Arguments: '65001'
+[2026-04-07 20:19:08Z INFO ProcessInvokerWrapper]   Working directory: 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner\_work'
+[2026-04-07 20:19:08Z INFO ProcessInvokerWrapper]   Require exit code zero: 'False'
+[2026-04-07 20:19:08Z INFO ProcessInvokerWrapper]   Encoding web name:  ; code page: ''
+[2026-04-07 20:19:08Z INFO ProcessInvokerWrapper]   Force kill process on cancellation: 'False'
+[2026-04-07 20:19:08Z INFO ProcessInvokerWrapper]   Redirected STDIN: 'False'
+[2026-04-07 20:19:08Z INFO ProcessInvokerWrapper]   Persist current code page: 'True'
+[2026-04-07 20:19:08Z INFO ProcessInvokerWrapper]   Keep redirected STDIN open: 'False'
+[2026-04-07 20:19:08Z INFO ProcessInvokerWrapper]   High priority process: 'False'
+[2026-04-07 20:19:08Z INFO ProcessInvokerWrapper] Process started with process id 27420, waiting for process exit.
+[2026-04-07 20:19:08Z INFO ProcessInvokerWrapper] STDOUT/STDERR stream read finished.
+[2026-04-07 20:19:08Z INFO ProcessInvokerWrapper] STDOUT/STDERR stream read finished.
+[2026-04-07 20:19:08Z INFO ProcessInvokerWrapper] Finished process 27420 with exit code 0, and elapsed time 00:00:00.0173808.
+[2026-04-07 20:19:08Z INFO StepsRunner] Successfully returned to code page 65001 (UTF8)
+[2026-04-07 20:19:08Z INFO HostContext] Well known directory 'Bin': 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner\bin'
+[2026-04-07 20:19:08Z INFO HostContext] Well known directory 'Root': 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner'
+[2026-04-07 20:19:08Z INFO HostContext] Well known directory 'Work': 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner\_work'
+[2026-04-07 20:19:08Z INFO HostContext] Well known directory 'Temp': 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner\_work\_temp'
+[2026-04-07 20:19:08Z INFO ExecutionContext] Write event payload to C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner\_work\_temp\_github_workflow\event.json
+[2026-04-07 20:19:08Z INFO HostContext] Well known directory 'Bin': 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner\bin'
+[2026-04-07 20:19:08Z INFO HostContext] Well known directory 'Root': 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner'
+[2026-04-07 20:19:08Z INFO HostContext] Well known directory 'Work': 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner\_work'
+[2026-04-07 20:19:08Z INFO HostContext] Well known directory 'Temp': 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner\_work\_temp'
+[2026-04-07 20:19:08Z INFO ExtensionManager] Getting extensions for interface: 'GitHub.Runner.Worker.IFileCommandExtension'
+[2026-04-07 20:19:08Z INFO ExtensionManager] Getting extensions for interface: 'GitHub.Runner.Worker.IActionCommandExtension'
+[2026-04-07 20:19:08Z INFO ActionCommandManager] Register action command extension for command internal-set-repo-path
+[2026-04-07 20:19:08Z INFO ActionCommandManager] Register action command extension for command set-env
+[2026-04-07 20:19:08Z INFO ActionCommandManager] Register action command extension for command set-output
+[2026-04-07 20:19:08Z INFO ActionCommandManager] Register action command extension for command save-state
+[2026-04-07 20:19:08Z INFO ActionCommandManager] Register action command extension for command add-path
+[2026-04-07 20:19:08Z INFO ActionCommandManager] Register action command extension for command add-mask
+[2026-04-07 20:19:08Z INFO ActionCommandManager] Register action command extension for command add-matcher
+[2026-04-07 20:19:08Z INFO ActionCommandManager] Register action command extension for command remove-matcher
+[2026-04-07 20:19:08Z INFO ActionCommandManager] Register action command extension for command warning
+[2026-04-07 20:19:08Z INFO ActionCommandManager] Register action command extension for command error
+[2026-04-07 20:19:08Z INFO ActionCommandManager] Register action command extension for command notice
+[2026-04-07 20:19:08Z INFO ActionCommandManager] Register action command extension for command debug
+[2026-04-07 20:19:08Z INFO ActionCommandManager] Register action command extension for command group
+[2026-04-07 20:19:08Z INFO ActionCommandManager] Register action command extension for command endgroup
+[2026-04-07 20:19:08Z INFO ActionCommandManager] Register action command extension for command echo
+[2026-04-07 20:19:08Z INFO ScriptHandler] Which2: 'pwsh'
+[2026-04-07 20:19:08Z INFO ScriptHandler] pwsh: command not found. Make sure 'pwsh' is installed and its location included in the 'Path' environment variable.
+[2026-04-07 20:19:08Z INFO ScriptHandler] Defaulting to powershell
+[2026-04-07 20:19:08Z INFO ScriptHandler] Which2: 'powershell'
+[2026-04-07 20:19:08Z INFO ScriptHandler] Location: 'C:\windows\System32\WindowsPowerShell\v1.0\powershell.EXE'
+[2026-04-07 20:19:08Z INFO HostContext] Well known directory 'Bin': 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner\bin'
+[2026-04-07 20:19:08Z INFO HostContext] Well known directory 'Root': 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner'
+[2026-04-07 20:19:08Z INFO HostContext] Well known directory 'Work': 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner\_work'
+[2026-04-07 20:19:08Z INFO HostContext] Well known directory 'Temp': 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner\_work\_temp'
+[2026-04-07 20:19:08Z INFO ScriptHandler] Which2: 'pwsh'
+[2026-04-07 20:19:08Z INFO JobServerQueue] Got a step log file to send to results service.
+[2026-04-07 20:19:08Z INFO JobServerQueue] Starting upload of step log file to results service ResultsLog, C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner\_diag\blocks\d2398eea-7747-464c-824e-45f509b8c274_f07da23c-e5c4-4c42-b9b0-efe11856e48f.1
+[2026-04-07 20:19:08Z INFO ScriptHandler] pwsh: command not found. Make sure 'pwsh' is installed and its location included in the 'Path' environment variable.
+[2026-04-07 20:19:08Z INFO ScriptHandler] Defaulting to powershell
+[2026-04-07 20:19:08Z INFO ScriptHandler] Which2: 'powershell'
+[2026-04-07 20:19:08Z INFO ScriptHandler] Location: 'C:\windows\System32\WindowsPowerShell\v1.0\powershell.EXE'
+[2026-04-07 20:19:08Z INFO ProcessInvokerWrapper] Starting process:
+[2026-04-07 20:19:08Z INFO ProcessInvokerWrapper]   File name: 'C:\windows\System32\WindowsPowerShell\v1.0\powershell.EXE'
+[2026-04-07 20:19:08Z INFO ProcessInvokerWrapper]   Arguments: '-command ". 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner\_work\_temp\ae96d443-aa02-4076-ae37-a2c6ed5534ae.ps1'"'
+[2026-04-07 20:19:08Z INFO ProcessInvokerWrapper]   Working directory: 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner\_work\Homework\Homework'
+[2026-04-07 20:19:08Z INFO ProcessInvokerWrapper]   Require exit code zero: 'False'
+[2026-04-07 20:19:08Z INFO ProcessInvokerWrapper]   Encoding web name:  ; code page: ''
+[2026-04-07 20:19:08Z INFO ProcessInvokerWrapper]   Force kill process on cancellation: 'False'
+[2026-04-07 20:19:08Z INFO ProcessInvokerWrapper]   Redirected STDIN: 'False'
+[2026-04-07 20:19:08Z INFO ProcessInvokerWrapper]   Persist current code page: 'True'
+[2026-04-07 20:19:08Z INFO ProcessInvokerWrapper]   Keep redirected STDIN open: 'False'
+[2026-04-07 20:19:08Z INFO ProcessInvokerWrapper]   High priority process: 'False'
+[2026-04-07 20:19:08Z INFO ProcessInvokerWrapper] Process started with process id 24016, waiting for process exit.
+[2026-04-07 20:19:09Z INFO JobServerQueue] Try to append 1 batches web console lines for record '1af0d86c-5030-4bb6-a375-b38c914571b2', success rate: 1/1.
+[2026-04-07 20:19:09Z INFO JobServerQueue] Try to upload 1 log files or attachments, success rate: 1/1.
+[2026-04-07 20:19:09Z INFO JobServerQueue] Tried to upload 1 file(s) to results, success rate: 1/1.
+[2026-04-07 20:19:10Z INFO JobServerQueue] Try to append 1 batches web console lines for record '1af0d86c-5030-4bb6-a375-b38c914571b2', success rate: 1/1.
+[2026-04-07 20:19:10Z INFO ProcessInvokerWrapper] STDOUT/STDERR stream read finished.
+[2026-04-07 20:19:10Z INFO ProcessInvokerWrapper] STDOUT/STDERR stream read finished.
+[2026-04-07 20:19:10Z INFO ProcessInvokerWrapper] Finished process 24016 with exit code 0, and elapsed time 00:00:01.1485624.
+[2026-04-07 20:19:10Z INFO CreateStepSummaryCommand] Step Summary file (C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner\_work\_temp\_runner_file_commands\step_summary_b85bf53d-f27d-4388-be4d-f03ab2785ed2) is empty; skipping attachment upload
+[2026-04-07 20:19:10Z INFO StepsRunner] Step result: 
+[2026-04-07 20:19:10Z INFO ExecutionContext] Publish step telemetry for current step {
+  "action": "powershell",
+  "type": "run",
+  "stage": "Main",
+  "stepId": "1af0d86c-5030-4bb6-a375-b38c914571b2",
+  "stepContextName": "__run_2",
+  "result": "succeeded",
+  "errorMessages": [],
+  "executionTimeInSeconds": 2,
+  "startTime": "2026-04-07T20:19:08.9105432Z",
+  "finishTime": "2026-04-07T20:19:10.1385192Z"
+}.
+[2026-04-07 20:19:10Z INFO StepsRunner] No need for updating job result with current step result 'Succeeded'.
+[2026-04-07 20:19:10Z INFO StepsRunner] Current state: job state = ''
+[2026-04-07 20:19:10Z INFO StepsRunner] Processing step: DisplayName='Run new container'
+[2026-04-07 20:19:10Z INFO StepsRunner] Evaluating: success()
+[2026-04-07 20:19:10Z INFO StepsRunner] Result: true
+[2026-04-07 20:19:10Z INFO StepsRunner] Starting the step.
+[2026-04-07 20:19:10Z INFO HostContext] Well known directory 'Bin': 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner\bin'
+[2026-04-07 20:19:10Z INFO HostContext] Well known directory 'Root': 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner'
+[2026-04-07 20:19:10Z INFO HostContext] Well known directory 'Work': 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner\_work'
+[2026-04-07 20:19:10Z INFO StepsRunner] Which2: 'chcp'
+[2026-04-07 20:19:10Z INFO StepsRunner] Location: 'C:\windows\system32\chcp.COM'
+[2026-04-07 20:19:10Z INFO ProcessInvokerWrapper] Starting process:
+[2026-04-07 20:19:10Z INFO ProcessInvokerWrapper]   File name: 'C:\windows\system32\chcp.COM'
+[2026-04-07 20:19:10Z INFO ProcessInvokerWrapper]   Arguments: '65001'
+[2026-04-07 20:19:10Z INFO ProcessInvokerWrapper]   Working directory: 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner\_work'
+[2026-04-07 20:19:10Z INFO ProcessInvokerWrapper]   Require exit code zero: 'False'
+[2026-04-07 20:19:10Z INFO ProcessInvokerWrapper]   Encoding web name:  ; code page: ''
+[2026-04-07 20:19:10Z INFO ProcessInvokerWrapper]   Force kill process on cancellation: 'False'
+[2026-04-07 20:19:10Z INFO ProcessInvokerWrapper]   Redirected STDIN: 'False'
+[2026-04-07 20:19:10Z INFO ProcessInvokerWrapper]   Persist current code page: 'True'
+[2026-04-07 20:19:10Z INFO ProcessInvokerWrapper]   Keep redirected STDIN open: 'False'
+[2026-04-07 20:19:10Z INFO ProcessInvokerWrapper]   High priority process: 'False'
+[2026-04-07 20:19:10Z INFO ProcessInvokerWrapper] Process started with process id 26860, waiting for process exit.
+[2026-04-07 20:19:10Z INFO ProcessInvokerWrapper] STDOUT/STDERR stream read finished.
+[2026-04-07 20:19:10Z INFO ProcessInvokerWrapper] STDOUT/STDERR stream read finished.
+[2026-04-07 20:19:10Z INFO ProcessInvokerWrapper] Finished process 26860 with exit code 0, and elapsed time 00:00:00.0188448.
+[2026-04-07 20:19:10Z INFO StepsRunner] Successfully returned to code page 65001 (UTF8)
+[2026-04-07 20:19:10Z INFO HostContext] Well known directory 'Bin': 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner\bin'
+[2026-04-07 20:19:10Z INFO HostContext] Well known directory 'Root': 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner'
+[2026-04-07 20:19:10Z INFO HostContext] Well known directory 'Work': 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner\_work'
+[2026-04-07 20:19:10Z INFO HostContext] Well known directory 'Temp': 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner\_work\_temp'
+[2026-04-07 20:19:10Z INFO ExecutionContext] Write event payload to C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner\_work\_temp\_github_workflow\event.json
+[2026-04-07 20:19:10Z INFO HostContext] Well known directory 'Bin': 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner\bin'
+[2026-04-07 20:19:10Z INFO HostContext] Well known directory 'Root': 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner'
+[2026-04-07 20:19:10Z INFO HostContext] Well known directory 'Work': 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner\_work'
+[2026-04-07 20:19:10Z INFO HostContext] Well known directory 'Temp': 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner\_work\_temp'
+[2026-04-07 20:19:10Z INFO ExtensionManager] Getting extensions for interface: 'GitHub.Runner.Worker.IFileCommandExtension'
+[2026-04-07 20:19:10Z INFO ExtensionManager] Getting extensions for interface: 'GitHub.Runner.Worker.IActionCommandExtension'
+[2026-04-07 20:19:10Z INFO ActionCommandManager] Register action command extension for command internal-set-repo-path
+[2026-04-07 20:19:10Z INFO ActionCommandManager] Register action command extension for command set-env
+[2026-04-07 20:19:10Z INFO ActionCommandManager] Register action command extension for command set-output
+[2026-04-07 20:19:10Z INFO ActionCommandManager] Register action command extension for command save-state
+[2026-04-07 20:19:10Z INFO ActionCommandManager] Register action command extension for command add-path
+[2026-04-07 20:19:10Z INFO ActionCommandManager] Register action command extension for command add-mask
+[2026-04-07 20:19:10Z INFO ActionCommandManager] Register action command extension for command add-matcher
+[2026-04-07 20:19:10Z INFO ActionCommandManager] Register action command extension for command remove-matcher
+[2026-04-07 20:19:10Z INFO ActionCommandManager] Register action command extension for command warning
+[2026-04-07 20:19:10Z INFO ActionCommandManager] Register action command extension for command error
+[2026-04-07 20:19:10Z INFO ActionCommandManager] Register action command extension for command notice
+[2026-04-07 20:19:10Z INFO ActionCommandManager] Register action command extension for command debug
+[2026-04-07 20:19:10Z INFO ActionCommandManager] Register action command extension for command group
+[2026-04-07 20:19:10Z INFO ActionCommandManager] Register action command extension for command endgroup
+[2026-04-07 20:19:10Z INFO ActionCommandManager] Register action command extension for command echo
+[2026-04-07 20:19:10Z INFO ScriptHandler] Which2: 'pwsh'
+[2026-04-07 20:19:10Z INFO ScriptHandler] pwsh: command not found. Make sure 'pwsh' is installed and its location included in the 'Path' environment variable.
+[2026-04-07 20:19:10Z INFO ScriptHandler] Defaulting to powershell
+[2026-04-07 20:19:10Z INFO ScriptHandler] Which2: 'powershell'
+[2026-04-07 20:19:10Z INFO ScriptHandler] Location: 'C:\windows\System32\WindowsPowerShell\v1.0\powershell.EXE'
+[2026-04-07 20:19:10Z INFO HostContext] Well known directory 'Bin': 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner\bin'
+[2026-04-07 20:19:10Z INFO HostContext] Well known directory 'Root': 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner'
+[2026-04-07 20:19:10Z INFO HostContext] Well known directory 'Work': 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner\_work'
+[2026-04-07 20:19:10Z INFO HostContext] Well known directory 'Temp': 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner\_work\_temp'
+[2026-04-07 20:19:10Z INFO ScriptHandler] Which2: 'pwsh'
+[2026-04-07 20:19:10Z INFO ScriptHandler] pwsh: command not found. Make sure 'pwsh' is installed and its location included in the 'Path' environment variable.
+[2026-04-07 20:19:10Z INFO ScriptHandler] Defaulting to powershell
+[2026-04-07 20:19:10Z INFO ScriptHandler] Which2: 'powershell'
+[2026-04-07 20:19:10Z INFO JobServerQueue] Try to upload 1 log files or attachments, success rate: 1/1.
+[2026-04-07 20:19:10Z INFO ScriptHandler] Location: 'C:\windows\System32\WindowsPowerShell\v1.0\powershell.EXE'
+[2026-04-07 20:19:10Z INFO ProcessInvokerWrapper] Starting process:
+[2026-04-07 20:19:10Z INFO ProcessInvokerWrapper]   File name: 'C:\windows\System32\WindowsPowerShell\v1.0\powershell.EXE'
+[2026-04-07 20:19:10Z INFO ProcessInvokerWrapper]   Arguments: '-command ". 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner\_work\_temp\f3afa762-8a1c-4cf0-81da-1cb81899e0fb.ps1'"'
+[2026-04-07 20:19:10Z INFO ProcessInvokerWrapper]   Working directory: 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner\_work\Homework\Homework'
+[2026-04-07 20:19:10Z INFO ProcessInvokerWrapper]   Require exit code zero: 'False'
+[2026-04-07 20:19:10Z INFO ProcessInvokerWrapper]   Encoding web name:  ; code page: ''
+[2026-04-07 20:19:10Z INFO ProcessInvokerWrapper]   Force kill process on cancellation: 'False'
+[2026-04-07 20:19:10Z INFO ProcessInvokerWrapper]   Redirected STDIN: 'False'
+[2026-04-07 20:19:10Z INFO ProcessInvokerWrapper]   Persist current code page: 'True'
+[2026-04-07 20:19:10Z INFO ProcessInvokerWrapper]   Keep redirected STDIN open: 'False'
+[2026-04-07 20:19:10Z INFO ProcessInvokerWrapper]   High priority process: 'False'
+[2026-04-07 20:19:10Z INFO ProcessInvokerWrapper] Process started with process id 22284, waiting for process exit.
+[2026-04-07 20:19:10Z INFO JobServerQueue] Try to append 1 batches web console lines for record 'cc846c30-6a69-4e67-98e3-976d6e5d0a2f', success rate: 1/1.
+[2026-04-07 20:19:10Z INFO JobServerQueue] Try to append 1 batches web console lines for record 'cc846c30-6a69-4e67-98e3-976d6e5d0a2f', success rate: 1/1.
+[2026-04-07 20:19:10Z INFO JobServerQueue] Got a step log file to send to results service.
+[2026-04-07 20:19:10Z INFO JobServerQueue] Starting upload of step log file to results service ResultsLog, C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner\_diag\blocks\d2398eea-7747-464c-824e-45f509b8c274_1af0d86c-5030-4bb6-a375-b38c914571b2.1
+[2026-04-07 20:19:10Z INFO ProcessInvokerWrapper] STDOUT/STDERR stream read finished.
+[2026-04-07 20:19:10Z INFO ProcessInvokerWrapper] STDOUT/STDERR stream read finished.
+[2026-04-07 20:19:10Z INFO ProcessInvokerWrapper] Finished process 22284 with exit code 0, and elapsed time 00:00:00.7539519.
+[2026-04-07 20:19:10Z INFO CreateStepSummaryCommand] Step Summary file (C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner\_work\_temp\_runner_file_commands\step_summary_124d5d88-16e6-4924-9123-88b1a136bb3b) is empty; skipping attachment upload
+[2026-04-07 20:19:10Z INFO StepsRunner] Step result: 
+[2026-04-07 20:19:10Z INFO ExecutionContext] Publish step telemetry for current step {
+  "action": "powershell",
+  "type": "run",
+  "stage": "Main",
+  "stepId": "cc846c30-6a69-4e67-98e3-976d6e5d0a2f",
+  "stepContextName": "__run_3",
+  "result": "succeeded",
+  "errorMessages": [],
+  "executionTimeInSeconds": 1,
+  "startTime": "2026-04-07T20:19:10.1398093Z",
+  "finishTime": "2026-04-07T20:19:10.9946419Z"
+}.
+[2026-04-07 20:19:10Z INFO StepsRunner] No need for updating job result with current step result 'Succeeded'.
+[2026-04-07 20:19:10Z INFO StepsRunner] Current state: job state = ''
+[2026-04-07 20:19:10Z INFO StepsRunner] Processing step: DisplayName='Clean up old Docker images'
+[2026-04-07 20:19:10Z INFO StepsRunner] Evaluating: success()
+[2026-04-07 20:19:10Z INFO StepsRunner] Result: true
+[2026-04-07 20:19:10Z INFO StepsRunner] Starting the step.
+[2026-04-07 20:19:10Z INFO HostContext] Well known directory 'Bin': 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner\bin'
+[2026-04-07 20:19:10Z INFO HostContext] Well known directory 'Root': 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner'
+[2026-04-07 20:19:10Z INFO HostContext] Well known directory 'Work': 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner\_work'
+[2026-04-07 20:19:10Z INFO StepsRunner] Which2: 'chcp'
+[2026-04-07 20:19:10Z INFO StepsRunner] Location: 'C:\windows\system32\chcp.COM'
+[2026-04-07 20:19:10Z INFO ProcessInvokerWrapper] Starting process:
+[2026-04-07 20:19:10Z INFO ProcessInvokerWrapper]   File name: 'C:\windows\system32\chcp.COM'
+[2026-04-07 20:19:10Z INFO ProcessInvokerWrapper]   Arguments: '65001'
+[2026-04-07 20:19:11Z INFO ProcessInvokerWrapper]   Working directory: 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner\_work'
+[2026-04-07 20:19:11Z INFO ProcessInvokerWrapper]   Require exit code zero: 'False'
+[2026-04-07 20:19:11Z INFO ProcessInvokerWrapper]   Encoding web name:  ; code page: ''
+[2026-04-07 20:19:11Z INFO ProcessInvokerWrapper]   Force kill process on cancellation: 'False'
+[2026-04-07 20:19:11Z INFO ProcessInvokerWrapper]   Redirected STDIN: 'False'
+[2026-04-07 20:19:11Z INFO ProcessInvokerWrapper]   Persist current code page: 'True'
+[2026-04-07 20:19:11Z INFO ProcessInvokerWrapper]   Keep redirected STDIN open: 'False'
+[2026-04-07 20:19:11Z INFO ProcessInvokerWrapper]   High priority process: 'False'
+[2026-04-07 20:19:11Z INFO ProcessInvokerWrapper] Process started with process id 17340, waiting for process exit.
+[2026-04-07 20:19:11Z INFO ProcessInvokerWrapper] STDOUT/STDERR stream read finished.
+[2026-04-07 20:19:11Z INFO ProcessInvokerWrapper] STDOUT/STDERR stream read finished.
+[2026-04-07 20:19:11Z INFO ProcessInvokerWrapper] Finished process 17340 with exit code 0, and elapsed time 00:00:00.0168556.
+[2026-04-07 20:19:11Z INFO StepsRunner] Successfully returned to code page 65001 (UTF8)
+[2026-04-07 20:19:11Z INFO HostContext] Well known directory 'Bin': 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner\bin'
+[2026-04-07 20:19:11Z INFO HostContext] Well known directory 'Root': 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner'
+[2026-04-07 20:19:11Z INFO HostContext] Well known directory 'Work': 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner\_work'
+[2026-04-07 20:19:11Z INFO HostContext] Well known directory 'Temp': 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner\_work\_temp'
+[2026-04-07 20:19:11Z INFO ExecutionContext] Write event payload to C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner\_work\_temp\_github_workflow\event.json
+[2026-04-07 20:19:11Z INFO HostContext] Well known directory 'Bin': 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner\bin'
+[2026-04-07 20:19:11Z INFO HostContext] Well known directory 'Root': 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner'
+[2026-04-07 20:19:11Z INFO HostContext] Well known directory 'Work': 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner\_work'
+[2026-04-07 20:19:11Z INFO HostContext] Well known directory 'Temp': 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner\_work\_temp'
+[2026-04-07 20:19:11Z INFO ExtensionManager] Getting extensions for interface: 'GitHub.Runner.Worker.IFileCommandExtension'
+[2026-04-07 20:19:11Z INFO ExtensionManager] Getting extensions for interface: 'GitHub.Runner.Worker.IActionCommandExtension'
+[2026-04-07 20:19:11Z INFO ActionCommandManager] Register action command extension for command internal-set-repo-path
+[2026-04-07 20:19:11Z INFO ActionCommandManager] Register action command extension for command set-env
+[2026-04-07 20:19:11Z INFO ActionCommandManager] Register action command extension for command set-output
+[2026-04-07 20:19:11Z INFO ActionCommandManager] Register action command extension for command save-state
+[2026-04-07 20:19:11Z INFO ActionCommandManager] Register action command extension for command add-path
+[2026-04-07 20:19:11Z INFO ActionCommandManager] Register action command extension for command add-mask
+[2026-04-07 20:19:11Z INFO ActionCommandManager] Register action command extension for command add-matcher
+[2026-04-07 20:19:11Z INFO ActionCommandManager] Register action command extension for command remove-matcher
+[2026-04-07 20:19:11Z INFO ActionCommandManager] Register action command extension for command warning
+[2026-04-07 20:19:11Z INFO ActionCommandManager] Register action command extension for command error
+[2026-04-07 20:19:11Z INFO ActionCommandManager] Register action command extension for command notice
+[2026-04-07 20:19:11Z INFO ActionCommandManager] Register action command extension for command debug
+[2026-04-07 20:19:11Z INFO ActionCommandManager] Register action command extension for command group
+[2026-04-07 20:19:11Z INFO ActionCommandManager] Register action command extension for command endgroup
+[2026-04-07 20:19:11Z INFO ActionCommandManager] Register action command extension for command echo
+[2026-04-07 20:19:11Z INFO ScriptHandler] Which2: 'pwsh'
+[2026-04-07 20:19:11Z INFO ScriptHandler] pwsh: command not found. Make sure 'pwsh' is installed and its location included in the 'Path' environment variable.
+[2026-04-07 20:19:11Z INFO ScriptHandler] Defaulting to powershell
+[2026-04-07 20:19:11Z INFO ScriptHandler] Which2: 'powershell'
+[2026-04-07 20:19:11Z INFO ScriptHandler] Location: 'C:\windows\System32\WindowsPowerShell\v1.0\powershell.EXE'
+[2026-04-07 20:19:11Z INFO HostContext] Well known directory 'Bin': 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner\bin'
+[2026-04-07 20:19:11Z INFO HostContext] Well known directory 'Root': 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner'
+[2026-04-07 20:19:11Z INFO HostContext] Well known directory 'Work': 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner\_work'
+[2026-04-07 20:19:11Z INFO HostContext] Well known directory 'Temp': 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner\_work\_temp'
+[2026-04-07 20:19:11Z INFO ScriptHandler] Which2: 'pwsh'
+[2026-04-07 20:19:11Z INFO ScriptHandler] pwsh: command not found. Make sure 'pwsh' is installed and its location included in the 'Path' environment variable.
+[2026-04-07 20:19:11Z INFO ScriptHandler] Defaulting to powershell
+[2026-04-07 20:19:11Z INFO ScriptHandler] Which2: 'powershell'
+[2026-04-07 20:19:11Z INFO ScriptHandler] Location: 'C:\windows\System32\WindowsPowerShell\v1.0\powershell.EXE'
+[2026-04-07 20:19:11Z INFO ProcessInvokerWrapper] Starting process:
+[2026-04-07 20:19:11Z INFO ProcessInvokerWrapper]   File name: 'C:\windows\System32\WindowsPowerShell\v1.0\powershell.EXE'
+[2026-04-07 20:19:11Z INFO ProcessInvokerWrapper]   Arguments: '-command ". 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner\_work\_temp\852ec4ba-3757-4c3b-9f10-37ecca5966e7.ps1'"'
+[2026-04-07 20:19:11Z INFO ProcessInvokerWrapper]   Working directory: 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner\_work\Homework\Homework'
+[2026-04-07 20:19:11Z INFO ProcessInvokerWrapper]   Require exit code zero: 'False'
+[2026-04-07 20:19:11Z INFO ProcessInvokerWrapper]   Encoding web name:  ; code page: ''
+[2026-04-07 20:19:11Z INFO ProcessInvokerWrapper]   Force kill process on cancellation: 'False'
+[2026-04-07 20:19:11Z INFO ProcessInvokerWrapper]   Redirected STDIN: 'False'
+[2026-04-07 20:19:11Z INFO ProcessInvokerWrapper]   Persist current code page: 'True'
+[2026-04-07 20:19:11Z INFO ProcessInvokerWrapper]   Keep redirected STDIN open: 'False'
+[2026-04-07 20:19:11Z INFO ProcessInvokerWrapper]   High priority process: 'False'
+[2026-04-07 20:19:11Z INFO ProcessInvokerWrapper] Process started with process id 23880, waiting for process exit.
+[2026-04-07 20:19:11Z INFO JobServerQueue] Try to append 1 batches web console lines for record '51b50854-a1ec-4ea7-8ccb-ced37eeee3fc', success rate: 1/1.
+[2026-04-07 20:19:11Z INFO JobServerQueue] Try to upload 1 log files or attachments, success rate: 1/1.
+[2026-04-07 20:19:11Z INFO JobServerQueue] Tried to upload 1 file(s) to results, success rate: 1/1.
+[2026-04-07 20:19:11Z INFO ProcessInvokerWrapper] STDOUT/STDERR stream read finished.
+[2026-04-07 20:19:11Z INFO ProcessInvokerWrapper] STDOUT/STDERR stream read finished.
+[2026-04-07 20:19:11Z INFO ProcessInvokerWrapper] Finished process 23880 with exit code 0, and elapsed time 00:00:00.4218417.
+[2026-04-07 20:19:11Z INFO CreateStepSummaryCommand] Step Summary file (C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner\_work\_temp\_runner_file_commands\step_summary_0c9145c8-4cdf-47d8-b48f-29f7cc2e12e7) is empty; skipping attachment upload
+[2026-04-07 20:19:11Z INFO StepsRunner] Step result: 
+[2026-04-07 20:19:11Z INFO ExecutionContext] Publish step telemetry for current step {
+  "action": "powershell",
+  "type": "run",
+  "stage": "Main",
+  "stepId": "51b50854-a1ec-4ea7-8ccb-ced37eeee3fc",
+  "stepContextName": "__run_4",
+  "result": "succeeded",
+  "errorMessages": [],
+  "executionTimeInSeconds": 1,
+  "startTime": "2026-04-07T20:19:10.9966287Z",
+  "finishTime": "2026-04-07T20:19:11.5266634Z"
+}.
+[2026-04-07 20:19:11Z INFO StepsRunner] No need for updating job result with current step result 'Succeeded'.
+[2026-04-07 20:19:11Z INFO StepsRunner] Current state: job state = ''
+[2026-04-07 20:19:11Z INFO JobRunner] Finalize job.
+[2026-04-07 20:19:11Z INFO HostContext] Well known directory 'Bin': 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner\bin'
+[2026-04-07 20:19:11Z INFO HostContext] Well known directory 'Root': 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner'
+[2026-04-07 20:19:11Z INFO HostContext] Well known directory 'Diag': 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner\_diag'
+[2026-04-07 20:19:11Z INFO HostContext] Well known directory 'Bin': 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner\bin'
+[2026-04-07 20:19:11Z INFO HostContext] Well known directory 'Root': 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner'
+[2026-04-07 20:19:11Z INFO HostContext] Well known directory 'Diag': 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner\_diag'
+[2026-04-07 20:19:11Z INFO JobExtension] Initialize Env context
+[2026-04-07 20:19:11Z INFO JobExtension] Initialize steps context
+[2026-04-07 20:19:11Z INFO JobExtension] Total accessible running process: 371.
+[2026-04-07 20:19:11Z INFO JobExtension] Wait for all connectivity checks to finish.
+[2026-04-07 20:19:11Z INFO JobExtension] Connectivity check result: GitHub.Runner.Worker.JobExtension+CheckResult
+[2026-04-07 20:19:11Z INFO JobExtension] Connectivity check result: GitHub.Runner.Worker.JobExtension+CheckResult
+[2026-04-07 20:19:11Z INFO JobExtension] Connectivity check result: GitHub.Runner.Worker.JobExtension+CheckResult
+[2026-04-07 20:19:11Z INFO ExecutionContext] Publish step telemetry for current step {
+  "action": "complete_job",
+  "type": "runner",
+  "stage": "Post",
+  "stepId": "5be4f0b3-4be3-49ce-afa8-67509bcc68ce",
+  "result": "succeeded",
+  "errorMessages": [],
+  "executionTimeInSeconds": 1,
+  "startTime": "2026-04-07T20:19:11.5351304Z",
+  "finishTime": "2026-04-07T20:19:11.5561803Z"
+}.
+[2026-04-07 20:19:11Z INFO JobRunner] Job result after all job steps finish: Succeeded
+[2026-04-07 20:19:11Z INFO JobRunner] Completing the job execution context.
+[2026-04-07 20:19:11Z INFO JobRunner] Shutting down the job server queue.
+[2026-04-07 20:19:11Z INFO JobServerQueue] Fire signal to shutdown all queues.
+[2026-04-07 20:19:12Z INFO JobServerQueue] All queue process task stopped.
+[2026-04-07 20:19:12Z INFO JobServerQueue] Try to append 1 batches web console lines for record '51b50854-a1ec-4ea7-8ccb-ced37eeee3fc', success rate: 1/1.
+[2026-04-07 20:19:12Z INFO JobServerQueue] Try to append 1 batches web console lines for record '5be4f0b3-4be3-49ce-afa8-67509bcc68ce', success rate: 1/1.
+[2026-04-07 20:19:12Z INFO JobServerQueue] Web console line queue drained.
+[2026-04-07 20:19:12Z INFO JobServerQueue] Uploading 3 files in one shot.
+[2026-04-07 20:19:12Z INFO JobServerQueue] Try to upload 3 log files or attachments, success rate: 3/3.
+[2026-04-07 20:19:12Z INFO JobServerQueue] File upload queue drained.
+[2026-04-07 20:19:12Z INFO JobServerQueue] Starting results-based upload queue...
+[2026-04-07 20:19:12Z INFO JobServerQueue] Uploading 4 file(s) in one shot through results service.
+[2026-04-07 20:19:12Z INFO JobServerQueue] Got a step log file to send to results service.
+[2026-04-07 20:19:12Z INFO JobServerQueue] Starting upload of step log file to results service ResultsLog, C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner\_diag\blocks\d2398eea-7747-464c-824e-45f509b8c274_cc846c30-6a69-4e67-98e3-976d6e5d0a2f.1
+[2026-04-07 20:19:13Z INFO JobServerQueue] Got a step log file to send to results service.
+[2026-04-07 20:19:13Z INFO JobServerQueue] Starting upload of step log file to results service ResultsLog, C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner\_diag\blocks\d2398eea-7747-464c-824e-45f509b8c274_51b50854-a1ec-4ea7-8ccb-ced37eeee3fc.1
+[2026-04-07 20:19:13Z INFO JobServerQueue] Got a step log file to send to results service.
+[2026-04-07 20:19:13Z INFO JobServerQueue] Starting upload of step log file to results service ResultsLog, C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner\_diag\blocks\d2398eea-7747-464c-824e-45f509b8c274_5be4f0b3-4be3-49ce-afa8-67509bcc68ce.1
+[2026-04-07 20:19:14Z INFO JobServerQueue] Got a job log file to send to results service.
+[2026-04-07 20:19:14Z INFO JobServerQueue] Starting upload of job log file to results service ResultsLog, C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner\_diag\blocks\d2398eea-7747-464c-824e-45f509b8c274_61faa0e9-07c4-5dbb-83bd-f538cfc7962c.1
+[2026-04-07 20:19:15Z INFO JobServerQueue] Tried to upload 4 file(s) to results, success rate: 4/4.
+[2026-04-07 20:19:15Z INFO JobServerQueue] Results upload queue drained.
+[2026-04-07 20:19:15Z INFO JobServerQueue] Timeline update queue drained.
+[2026-04-07 20:19:15Z INFO JobServerQueue] Disposing job server ...
+[2026-04-07 20:19:15Z INFO JobServerQueue] Disposing results server ...
+[2026-04-07 20:19:15Z INFO JobServerQueue] All queue process tasks have been stopped, and all queues are drained.
+[2026-04-07 20:19:15Z INFO TempDirectoryManager] Cleaning runner temp folder: C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner\_work\_temp
+[2026-04-07 20:19:15Z INFO HostContext] Well known directory 'Bin': 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner\bin'
+[2026-04-07 20:19:15Z INFO HostContext] Well known directory 'Root': 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner'
+[2026-04-07 20:19:15Z INFO HostContext] Well known directory 'Diag': 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner\_diag'
+[2026-04-07 20:19:15Z INFO HostContext] Well known config file 'Telemetry': 'C:\Users\sjlee\OneDrive\Desktop\오픈소스\actions-runner\_diag\.telemetry'
+[2026-04-07 20:19:15Z INFO JobRunner] Raising job completed against run service
+[2026-04-07 20:19:16Z INFO Worker] Job completed.

@@ -262,7 +262,7 @@
                 </div>
             </div>
             <div class="image-card">
-                <h3>Character 🪄</h3>
+                <h3 id="char-title">Character 🪄</h3>
                 <div class="img-wrapper">
                     <img id="cartoon-img" src="" alt="만화 버전 이미지">
                 </div>
@@ -345,11 +345,15 @@
             })
             .then(response => {
                 if (!response.ok) throw new Error('서버 응답 오류');
-                return response.blob();
+                return response.json();
             })
-            .then(blob => {
-                const objectURL = URL.createObjectURL(blob);
-                cartoonImg.src = objectURL;
+            .then(data => {
+                // Base64 문자열을 이미지 소스로 바인딩
+                cartoonImg.src = "data:image/jpeg;base64," + data.image_base64;
+                
+                // 서버에서 지어준 깜찍한 캐릭터 이름을 화면에 표시
+                const charTitle = document.getElementById('char-title');
+                charTitle.innerHTML = "내 이름은 <br><span style='color:#FF7B93'>" + data.character_name + "</span>! 🪄";
                 
                 // 결과화면으로 전환
                 loader.style.display = 'none';
@@ -368,12 +372,13 @@
             resultView.style.display = 'none';
             actionButtons.style.display = 'none';
             
-            // blob url 초기화
-            if(cartoonImg.src) URL.revokeObjectURL(cartoonImg.src);
-            
             originalImg.src = '';
             cartoonImg.src = '';
             fileInput.value = '';
+            
+            // 제목 초기화
+            const charTitle = document.getElementById('char-title');
+            if (charTitle) charTitle.innerHTML = "Character 🪄";
             
             uploadSection.style.display = 'block';
         }

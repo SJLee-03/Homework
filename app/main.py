@@ -2,6 +2,7 @@ from fastapi import FastAPI, File, UploadFile, HTTPException
 from fastapi.responses import Response, JSONResponse, FileResponse
 from .ml_model import generate_character_image
 import os
+import base64
 
 app = FastAPI(
     title="캐릭터 변환 API",
@@ -24,11 +25,17 @@ async def generate_character(file: UploadFile = File(...)):
         # 업로드된 이미지 읽기
         image_bytes = await file.read()
         
-        # ML 모델 처리를 통해 캐릭터 이미지 바이트 얻기
-        result_bytes = generate_character_image(image_bytes)
+        # ML 모델 처리를 통해 캐릭터 이미지 바이트와 생성된 이름 얻기
+        result_bytes, char_name = generate_character_image(image_bytes)
         
-        # 이미지로 반환
-        return Response(content=result_bytes, media_type="image/jpeg")
+        # 이미지를 텍스트(Base64)로 변환
+        base64_encoded = base64.b64encode(result_bytes).decode('utf-8')
+        
+        # JSON 형태로 반환
+        return JSONResponse(content={
+            "character_name": char_name,
+            "image_base64": base64_encoded
+        })
     
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))

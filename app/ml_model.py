@@ -1,6 +1,14 @@
 import torch
 from PIL import Image
 import io
+import random
+
+# 귀여운 방구석 작명소: 형용사와 명사를 무작위로 섞어서 예쁜 이름을 만들어냅니다.
+ADJECTIVES = ["말랑말랑한", "폭신폭신", "우주최강", "반짝이는", "동글동글", "세콤달콤", "잠꾸러기", "용감한", "수줍은", "사랑스러운"]
+NOUNS = ["찹쌀떡", "구름 요정", "딸기 토끼", "초코 강아지", "민트 냥이", "우주 먼지", "마시멜로", "바다 표범", "아기 곰", "별사탕"]
+
+def generate_random_name() -> str:
+    return f"{random.choice(ADJECTIVES)} {random.choice(NOUNS)}"
 
 # 전역(Global) 공간에서 AI 모델을 장전(Load)하여 메모리에 올려둡니다.
 # 로컬 서버 부팅 후 최초 1회 요청 시, Github에서 모델 가동에 필요한 가중치를 다운받으며 시간이 걸릴 수 있습니다.
@@ -20,7 +28,8 @@ except Exception as e:
     model = None
     face2paint = None
 
-def generate_character_image(image_bytes: bytes) -> bytes:
+# 이제 (이미지 바이트, 캐릭터 이름) 튜플을 반환하도록 수정합니다.
+def generate_character_image(image_bytes: bytes) -> tuple[bytes, str]:
     if model is None or face2paint is None:
         raise RuntimeError("서버에서 AI 딥러닝 모델을 초기화하지 못해 작업을 수행할 수 없습니다.")
 
@@ -38,4 +47,7 @@ def generate_character_image(image_bytes: bytes) -> bytes:
     img_byte_arr = io.BytesIO()
     out_img.save(img_byte_arr, format='JPEG', quality=95)
     
-    return img_byte_arr.getvalue()
+    # 랜덤 캐릭터명을 생성합니다.
+    char_name = generate_random_name()
+
+    return img_byte_arr.getvalue(), char_name
